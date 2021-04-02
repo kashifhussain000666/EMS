@@ -1,9 +1,4 @@
 <?php
-$sel_doctor_category = ''; 
-?>
-
-
-<?php
 $this->load->view('includes/header.php'); // load the header HTML 
 ?>
 <!-- Select2 -->
@@ -73,158 +68,26 @@ $this->load->view('includes/header.php'); // load the header HTML
                   <!-- Div Date Range picker --> 
 
                   <?php
-                    $sel_doctor = $this->input->post('sel_doctor');
+                    $sel_Employee = $this->input->post('sel_Employee');
                   ?>
-                  <div class="" style="width:15%;float: left;margin-right: 10px; <?php if($this->session->userdata('user_type')  == 1) { echo 'display:none;' ;}?>">
-                    <select class="form-control select2" name="sel_doctor" id="sel_doctor" style="">
-                      <option value="0">All Doctors</option>
+                  <div class="" style="width:15%;float: left;margin-right: 10px;">
+                    <select class="form-control select2" name="sel_Employee" id="sel_Employee" style="">
+                      <option value="0">All Employees</option>
                       <?php 
-                      foreach($Memberdoctors as $Memberdoctor)
+                      foreach($AllEmployees as $AllEmployee)
                       {
 
                       ?>
-                        <option value="<?=$Memberdoctor['user_id'] ?>" <?php if($sel_doctor == $Memberdoctor['user_id']){ echo "selected" ;} ?>><?php echo $Memberdoctor['user_fname'].' '.$Memberdoctor['user_lname']; ?></option>
+                        <option value="<?=$AllEmployee['user_id'] ?>" <?php if($sel_Employee == $AllEmployee['user_id']){ echo "selected" ;} ?>><?php echo $AllEmployee['user_name']; ?></option>
                       <?php 
                       }
                       ?>
                     </select>
                   </div>
-
-                  <?php
-                    $sel_patient = $this->input->post('sel_patient');
-                  ?>
-                  <div class="" style="width:15%;float: left;margin-right: 10px;<?php if($this->session->userdata('user_type')  == 2) { echo 'display:none;' ;}?>" >
-                    <select class="form-control select2" name="sel_patient" id="sel_patient" style="">
-                      <option value="0">All Patients</option>
-                      <?php 
-                      foreach($Memberpatients as $Memberpatient)
-                      {
-
-                      ?>
-                        <option value="<?=$Memberpatient['user_id'] ?>" <?php if($sel_patient == $Memberpatient['user_id']){ echo "selected" ;} ?>><?php echo $Memberpatient['user_fname'].' '.$Memberpatient['user_lname']; ?></option>
-                      <?php 
-                      }
-                      ?>
-                    </select>
-                  </div>
-
-                  <?php
-                  $sel_status = $this->input->post('sel_status');
-                  //echo $sel_doctor_category ; die("hello");
-                  ?>
-
-                <div class="col-md-2">
-                  <!-- select -->
-                  <div class="form-group">
-
-                    <select class="form-control" name="sel_status" id="sel_status">
-                      <option value="0">All Status</option>
-                    <?php 
-                        foreach($AppointmentStatus as $Status)
-                        {
-                        ?>
-                          <option value="<?=$Status['Custom_Field_Value_ID'] ?>" <?php if($sel_status == $Status['Custom_Field_Value_ID']){ echo "selected" ;}  ?>><?php echo $Status['Custom_Field_value_name']; ?></option>
-                        <?php 
-                        }
-                        ?>
-
-                    </select>
-                  </div>
-                </div>
-                     <?php 
-                 
-            $appointment_date_from     = $this->input->post('appointment_date_from');
-          
-
-          
-          ?>
-                <div class="col-md-3">
-                <span style="float: left;">From: </span>
-                  <div class="input-group date" style="margin-left:6%;width:156px;float: left;">
-                    <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="text" style="margin-left:10px;" name="appointment_date_from" id="appointment_date_from" value="<?=$appointment_date_from ?>" class="form-control pull-right" >
-                  </div>
-                </div>
-                     <?php
-
-            $appointment_date_to     = $this->input->post('appointment_date_to');
-          
-                ?>
-                <div class="col-md-3">
-                <span style="float: left;">To: </span>
-                  <div class="input-group date" style="margin-left:6%;width:156px;float: left;">
-                    <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="text" style="margin-left:10px;" name="appointment_date_to" value="<?=$appointment_date_to ?>"  id="appointment_date_to" class="form-control pull-right" >
-                  </div>
-                 </div>
-                  <!-- End div date range picker --> 
-                </div>
-              </div>
-                <div class="row">
-             
-                <?php 
-                 
-            $appointment_Time_start     = $this->input->post('appointment_Time_start');
-          
-        ?>
-                <div class="col-md-2">
-                <span style="float: left;"></span>
-                  <!-- Start time range picker -->
-                  <div class="bootstrap-timepicker">
-                    <div class="input-group " style="width:80%;">
-                      <!--<label>Time picker:</label>-->
-                      <input type="text" style="margin-left:10px;" id="appointment_Time_start" value="<?=$appointment_Time_start ?>"  name="appointment_Time_start" class="form-control timepicker">
-
-                      <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- END Time picker-->
-                </div>
-
-              <?php 
-                 
-            $appointment_Time_to     = $this->input->post('appointment_Time_to');
-          
-        ?>
-
-                <div class="col-md-2">
-                <span style="float: left;">And </span>
-                  <div class="bootstrap-timepicker">
-                    <div class="input-group " style="width:80%;">
-                      <!--<label>Time picker:</label>-->
-                      <input type="text" style="margin-left:10px;" id="appointment_Time_to" value="<?=$appointment_Time_to ?>" name="appointment_Time_to" class="form-control timepicker">
-
-                      <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                  
-                  <!-- END Time picker-->
-
-                    <!-- Date -->
-              <!--<div class="form-group">
-                <label>Date:</label>
--->
-                
-                <!-- /.input group 
-              </div>-->
-                    <!-- /.input group 
-                  </div>-->
-                  <!-- /.form group
-                </div> -->
-
                   <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
-                </div>
+                  <a href="<?php echo base_url().'Employee/AddEditEmployee/';?>" style="height:33px;float: right;" name="btn_search" class="btn btn-sm btn-info btn-flat">Add New Employee</a>
+              </div>
+              <br><br>
               </div>
               
             </form>
@@ -233,8 +96,14 @@ $this->load->view('includes/header.php'); // load the header HTML
                 <thead>
                 <tr>
                   <th>Id</th>
-                  
-                  <th>Employee Name</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Date Created</th>
+                  <th>Salary Per Hour</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip</th>
+                  <th>Country</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -242,18 +111,22 @@ $this->load->view('includes/header.php'); // load the header HTML
                    <?php
                 foreach($Employees as $Employee)
                 {
-                  // $appointment_date = $Appointment['appointment_date'];
-                  // $Formated_appointment_date = date('D d M, Y ', strtotime($appointment_date));
+                  $user_datecreated = $Employee['user_datecreated'];
+                  $Formated_user_datecreated = date('D d M, Y ', strtotime($user_datecreated));
 
                   // $appointment_time = $Appointment['appointment_time'];
                   // $Formated_appointment_Time = date('H:i A', strtotime($appointment_time));
                 ?>
                 <tr>
                   <td><?=$Employee['user_id'] ;?></td>
-                  
-                    <td>
-                    <?=$Employee['user_name'] ?>
-                    </td>
+                    <td><?=$Employee['user_name'] ?></td>
+                    <td><?=$Employee['user_email'] ?></td>
+                    <td><?=$Formated_user_datecreated ?></td>
+                    <td><?=$Employee['user_salaryPerHour'] ?></td>
+                    <td><?=$Employee['user_city'] ?></td>
+                    <td><?=$Employee['user_state'] ?></td>
+                    <td><?=$Employee['user_zip'] ?></td>
+                    <td><?=$Employee['user_country'] ?></td>
                     <td>
                       <a href="<?php echo base_url().'Employee/AddEditEmployee/'.$Employee['user_id']; ?> " target="_blank"  class="btn  btn-warning btn-sm">Update</a>
                     </td>
@@ -305,58 +178,58 @@ $this->load->view('includes/footer'); // load the footer HTML
 
    
 
-    //Date picker
-    $('#appointment_date_from').datepicker({
-      autoclose: true
-    })
+  //   //Date picker
+  //   $('#appointment_date_from').datepicker({
+  //     autoclose: true
+  //   })
 
-     //Date picker
-    $('#appointment_date_to').datepicker({
-      autoclose: true
-    })
+  //    //Date picker
+  //   $('#appointment_date_to').datepicker({
+  //     autoclose: true
+  //   })
 
-     //Timepicker
-    $('#appointment_Time_start').timepicker({
-      showInputs: false
-    })
+  //    //Timepicker
+  //   $('#appointment_Time_start').timepicker({
+  //     showInputs: false
+  //   })
 
-     //Timepicker
-    $('#appointment_Time_to').timepicker({
-      showInputs: false
-    })
-  })
+  //    //Timepicker
+  //   $('#appointment_Time_to').timepicker({
+  //     showInputs: false
+  //   })
+  // })
 
-  function funChangeAppointmentStatus(appointment_id , appointment_status_id , CancelAppointment)
-  {
-    var confirmmsg = "";
-    if(CancelAppointment == 1)
-    {
-      confirmmsg = "Are you sure you want to cancel this Appointment?";
-    }
-    else
-    {
-      confirmmsg = "Are you sure you want to approve this Appointment?";
-    }
-      if(confirm(confirmmsg))
-      {
-          $.ajax(
-         {
-          url:BaseUrlSite+'appointment/UpdateAppointmentStatus',
-          data:{
-              isAjaxCall    :'true',
-              appointment_id: appointment_id,
-              appointment_status_id : appointment_status_id,
-              CancelAppointment : CancelAppointment
-            },
-            type:'POST',
-            success:function(data)
-            {
+  // function funChangeAppointmentStatus(appointment_id , appointment_status_id , CancelAppointment)
+  // {
+  //   var confirmmsg = "";
+  //   if(CancelAppointment == 1)
+  //   {
+  //     confirmmsg = "Are you sure you want to cancel this Appointment?";
+  //   }
+  //   else
+  //   {
+  //     confirmmsg = "Are you sure you want to approve this Appointment?";
+  //   }
+  //     if(confirm(confirmmsg))
+  //     {
+  //         $.ajax(
+  //        {
+  //         url:BaseUrlSite+'appointment/UpdateAppointmentStatus',
+  //         data:{
+  //             isAjaxCall    :'true',
+  //             appointment_id: appointment_id,
+  //             appointment_status_id : appointment_status_id,
+  //             CancelAppointment : CancelAppointment
+  //           },
+  //           type:'POST',
+  //           success:function(data)
+  //           {
               
-              location.reload();
-            } 
-        });
-      }
-  }
+  //             location.reload();
+  //           } 
+  //       });
+  //     }
+  // }
 
    
 </script>

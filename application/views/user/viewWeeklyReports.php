@@ -1,7 +1,3 @@
-<?php
-$sel_doctor_category = ''; 
-?>
-
 
 <?php
 $this->load->view('includes/header.php'); // load the header HTML 
@@ -72,36 +68,18 @@ $this->load->view('includes/header.php'); // load the header HTML
                   <div class="form-group"> -->
                   <!-- Div Date Range picker --> 
 
-                  <?php
-                    $sel_doctor = $this->input->post('sel_doctor');
+                   <?php
+                    $sel_Employee = $this->input->post('sel_Employee');
                   ?>
-                  <div class="" style="width:15%;float: left;margin-right: 10px; <?php if($this->session->userdata('user_type')  == 1) { echo 'display:none;' ;}?>">
-                    <select class="form-control select2" name="sel_doctor" id="sel_doctor" style="">
-                      <option value="0">All Doctors</option>
+                  <div class="" style="width:15%;float: left;margin-right: 10px;">
+                    <select class="form-control select2" name="sel_Employee" id="sel_Employee" style="">
+                      <option value="0">All Employees</option>
                       <?php 
-                      foreach($Memberdoctors as $Memberdoctor)
+                      foreach($AllEmployees as $AllEmployee)
                       {
 
                       ?>
-                        <option value="<?=$Memberdoctor['user_id'] ?>" <?php if($sel_doctor == $Memberdoctor['user_id']){ echo "selected" ;} ?>><?php echo $Memberdoctor['user_fname'].' '.$Memberdoctor['user_lname']; ?></option>
-                      <?php 
-                      }
-                      ?>
-                    </select>
-                  </div>
-
-                  <?php
-                    $sel_patient = $this->input->post('sel_patient');
-                  ?>
-                  <div class="" style="width:15%;float: left;margin-right: 10px;<?php if($this->session->userdata('user_type')  == 2) { echo 'display:none;' ;}?>" >
-                    <select class="form-control select2" name="sel_patient" id="sel_patient" style="">
-                      <option value="0">All Patients</option>
-                      <?php 
-                      foreach($Memberpatients as $Memberpatient)
-                      {
-
-                      ?>
-                        <option value="<?=$Memberpatient['user_id'] ?>" <?php if($sel_patient == $Memberpatient['user_id']){ echo "selected" ;} ?>><?php echo $Memberpatient['user_fname'].' '.$Memberpatient['user_lname']; ?></option>
+                        <option value="<?=$AllEmployee['user_id'] ?>" <?php if($sel_Employee == $AllEmployee['user_id']){ echo "selected" ;} ?>><?php echo $AllEmployee['user_name']; ?></option>
                       <?php 
                       }
                       ?>
@@ -119,21 +97,15 @@ $this->load->view('includes/header.php'); // load the header HTML
 
                     <select class="form-control" name="sel_status" id="sel_status">
                       <option value="0">All Status</option>
-                    <?php 
-                        foreach($AppointmentStatus as $Status)
-                        {
-                        ?>
-                          <option value="<?=$Status['Custom_Field_Value_ID'] ?>" <?php if($sel_status == $Status['Custom_Field_Value_ID']){ echo "selected" ;}  ?>><?php echo $Status['Custom_Field_value_name']; ?></option>
-                        <?php 
-                        }
-                        ?>
+                          <option value="Pending" <?php if($sel_status == 'Pending'){ echo "selected" ;}  ?>>Pending</option>
+                          <option value="Approved" <?php if($sel_status == 'Approved'){ echo "selected" ;}  ?>>Approved</option>
 
                     </select>
                   </div>
                 </div>
                      <?php 
                  
-            $appointment_date_from     = $this->input->post('appointment_date_from');
+            $Report_date_from     = $this->input->post('Report_date_from');
           
 
           
@@ -144,12 +116,12 @@ $this->load->view('includes/header.php'); // load the header HTML
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" style="margin-left:10px;" name="appointment_date_from" id="appointment_date_from" value="<?=$appointment_date_from ?>" class="form-control pull-right" >
+                    <input type="text" style="margin-left:10px;" name="Report_date_from" id="Report_date_from" value="<?=$Report_date_from ?>" class="form-control pull-right" >
                   </div>
                 </div>
                      <?php
 
-            $appointment_date_to     = $this->input->post('appointment_date_to');
+            $Report_date_to     = $this->input->post('Report_date_to');
           
                 ?>
                 <div class="col-md-3">
@@ -158,73 +130,14 @@ $this->load->view('includes/header.php'); // load the header HTML
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" style="margin-left:10px;" name="appointment_date_to" value="<?=$appointment_date_to ?>"  id="appointment_date_to" class="form-control pull-right" >
+                    <input type="text" style="margin-left:10px;" name="Report_date_to" value="<?=$Report_date_to ?>"  id="Report_date_to" class="form-control pull-right" >
                   </div>
                  </div>
+
+                  <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
                   <!-- End div date range picker --> 
                 </div>
               </div>
-                <div class="row">
-             
-                <?php 
-                 
-            $appointment_Time_start     = $this->input->post('appointment_Time_start');
-          
-        ?>
-                <div class="col-md-2">
-                <span style="float: left;"></span>
-                  <!-- Start time range picker -->
-                  <div class="bootstrap-timepicker">
-                    <div class="input-group " style="width:80%;">
-                      <!--<label>Time picker:</label>-->
-                      <input type="text" style="margin-left:10px;" id="appointment_Time_start" value="<?=$appointment_Time_start ?>"  name="appointment_Time_start" class="form-control timepicker">
-
-                      <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- END Time picker-->
-                </div>
-
-              <?php 
-                 
-            $appointment_Time_to     = $this->input->post('appointment_Time_to');
-          
-        ?>
-
-                <div class="col-md-2">
-                <span style="float: left;">And </span>
-                  <div class="bootstrap-timepicker">
-                    <div class="input-group " style="width:80%;">
-                      <!--<label>Time picker:</label>-->
-                      <input type="text" style="margin-left:10px;" id="appointment_Time_to" value="<?=$appointment_Time_to ?>" name="appointment_Time_to" class="form-control timepicker">
-
-                      <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                  
-                  <!-- END Time picker-->
-
-                    <!-- Date -->
-              <!--<div class="form-group">
-                <label>Date:</label>
--->
-                
-                <!-- /.input group 
-              </div>-->
-                    <!-- /.input group 
-                  </div>-->
-                  <!-- /.form group
-                </div> -->
-
-                  <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
-                </div>
               </div>
               
             </form>
@@ -233,30 +146,62 @@ $this->load->view('includes/header.php'); // load the header HTML
                 <thead>
                 <tr>
                   <th>Id</th>
-                  
-                  <th>Employee Name</th>
+                  <th>Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Time Spend</th>
+                  <th>Salary Per Hour</th>
+                  <th>Total Salary</th>
+                  <th>Date Created</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                    <?php
-                foreach($Employees as $Employee)
+                foreach($WeeklyReports as $WeeklyReport)
                 {
-                  // $appointment_date = $Appointment['appointment_date'];
-                  // $Formated_appointment_date = date('D d M, Y ', strtotime($appointment_date));
+                  $user_WeeklyReport_Startdate = $WeeklyReport['user_WeeklyReport_Startdate'];
+                  $Formated_user_WeeklyReport_Startdate = date('D d M, Y ', strtotime($user_WeeklyReport_Startdate));
 
+                  $user_WeeklyReport_Enddate = $WeeklyReport['user_WeeklyReport_Enddate'];
+                  $Formated_user_WeeklyReport_Enddate = date('D d M, Y ', strtotime($user_WeeklyReport_Enddate));
+
+                  $user_WeeklyReport_dateCreated = $WeeklyReport['user_WeeklyReport_dateCreated'];
+                  $Formated_user_WeeklyReport_dateCreated = date('D d M, Y ', strtotime($user_WeeklyReport_dateCreated));
                   // $appointment_time = $Appointment['appointment_time'];
                   // $Formated_appointment_Time = date('H:i A', strtotime($appointment_time));
+
                 ?>
                 <tr>
-                  <td><?=$Employee['user_id'] ;?></td>
-                  
-                    <td>
-                    <?=$Employee['user_name'] ?>
+                  <td><?=$WeeklyReport['user_WeeklyReport_id'] ;?></td>
+                  <td><?=$WeeklyReport['employee_name'] ?></td>
+                  <td><?=$Formated_user_WeeklyReport_Startdate?></td>
+                  <td><?=$Formated_user_WeeklyReport_Enddate?></td>
+                  <td><?=$WeeklyReport['user_WeeklyReport_TimeSpend'] ?></td>
+                  <td><?=$WeeklyReport['user_WeeklyReport_SalaryPerHour'] ?></td>
+                  <td><?=$WeeklyReport['user_WeeklyReport_TotalSalary'] ?></td>
+                  <td><?=$Formated_user_WeeklyReport_dateCreated?></td>
+                  <td>
+                    <?php 
+                    if($WeeklyReport['user_WeeklyReport_isapproved'] == 1 )
+                    {
+                    ?> 
+                    <button class="btn  btn-warning btn-sm">Approved</button>
+                    <?php
+                    }
+                    else
+                    { 
+                    ?>
+                    <button class="btn  btn-danger btn-sm">Pending</button>
+                    <?php
+                    }
+                    ?>
+                      
                     </td>
-                    <td>
-                      <a href="<?php echo base_url().'Employee/AddEditEmployee/'.$Employee['user_id']; ?> " target="_blank"  class="btn  btn-warning btn-sm">Update</a>
-                    </td>
+                  <td>
+                    <a href="<?php echo base_url().'Employee/AddEditWeeklyReport/'.$WeeklyReport['user_WeeklyReport_id']; ?> " target="_blank"  class="btn  btn-warning btn-sm">Update/Approve</a>
+                  </td>
                   
                 </tr>
                 <?php
@@ -306,24 +251,24 @@ $this->load->view('includes/footer'); // load the footer HTML
    
 
     //Date picker
-    $('#appointment_date_from').datepicker({
+    $('#Report_date_from').datepicker({
       autoclose: true
     })
 
      //Date picker
-    $('#appointment_date_to').datepicker({
+    $('#Report_date_to').datepicker({
       autoclose: true
     })
 
-     //Timepicker
-    $('#appointment_Time_start').timepicker({
-      showInputs: false
-    })
+    //  //Timepicker
+    // $('#appointment_Time_start').timepicker({
+    //   showInputs: false
+    // })
 
-     //Timepicker
-    $('#appointment_Time_to').timepicker({
-      showInputs: false
-    })
+    //  //Timepicker
+    // $('#appointment_Time_to').timepicker({
+    //   showInputs: false
+    // })
   })
 
   function funChangeAppointmentStatus(appointment_id , appointment_status_id , CancelAppointment)

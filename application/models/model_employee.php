@@ -10,48 +10,33 @@ class model_employee extends CI_Model
 	public function GetEmployees()
 	{	
 		$WhereCondition = "";
-		$user_id = $this->session->userdata('user_id');
+		$sel_Employee     = $this->input->post('sel_Employee');
 
-		$sel_status     = $this->input->post('sel_status');
-		$sel_doctor     = $this->input->post('sel_doctor');
 
-		$appointment_date_from     = $this->input->post('appointment_date_from');
-		$appointment_date_to     = $this->input->post('appointment_date_to');
-
-		$appointment_Time_start     = $this->input->post('appointment_Time_start');
-		$appointment_Time_to     = $this->input->post('appointment_Time_to');
-
-		if($sel_status != '' && $sel_status != 0)
+		if($sel_Employee != '' && $sel_Employee != 0)
 		{
-			$WhereCondition .= "AND UDA.appointment_status_id = '$sel_status'";
-		} 
-
-		if($sel_doctor != '' && $sel_doctor != 0)
-		{
-			$WhereCondition .= "AND UDA.doctor_id = '$sel_doctor'";
+			$WhereCondition .= "AND tu.user_id = '$sel_Employee'";
 		}
 
-		if(($appointment_date_from != "" && $appointment_date_to !="" && $appointment_date_from <= $appointment_date_to) )
-		{	
-			$Formated_appointment_date_from = date('Y-m-d', strtotime($appointment_date_from));
-			$Formated_appointment_date_to = date('Y-m-d', strtotime($appointment_date_to));
+		$query  = $this->db->query(" 	
+										SELECT * FROM `tbl_user` tu
+										WHERE user_designation_id = 3
+										$WhereCondition
+									");
+		
+		$result = $query->result_array();			
+		return $result;
+	}
 
-			$WhereCondition .= "AND UDA.appointment_date BETWEEN '$Formated_appointment_date_from' AND '$Formated_appointment_date_to' ";
-		}
-
-		if(($appointment_Time_start != "" && $appointment_Time_to !="" && $appointment_Time_start < $appointment_Time_to) )
-		{	
-			$Formated_appointment_Time_start = date('h:i:s', strtotime($appointment_Time_start));
-			$Formated_appointment_Time_to = date('h:i:s', strtotime($appointment_Time_to));
-
-			$WhereCondition .= "AND UDA.appointment_time BETWEEN '$Formated_appointment_Time_start' AND '$Formated_appointment_Time_to' ";
-		}
-
-		$WhereCondition = '';
+	public function GetAllEmployees()
+	{	
+		$WhereCondition = "";
+		
 		$query  = $this->db->query(" 	
 										SELECT * FROM `tbl_user`
 										WHERE user_designation_id = 3
 										$WhereCondition
+										ORDER BY user_name
 									");
 		
 		$result = $query->result_array();			
@@ -64,45 +49,47 @@ class model_employee extends CI_Model
 		$WhereCondition = "";
 		$user_id = $this->session->userdata('user_id');
 
+		$sel_Employee     = $this->input->post('sel_Employee');
 		$sel_status     = $this->input->post('sel_status');
-		$sel_patient     = $this->input->post('sel_patient');
+		$Report_date_from     = $this->input->post('Report_date_from');
+		$Report_date_to     = $this->input->post('Report_date_to');
 
-		
 
-		$appointment_date_from     = $this->input->post('appointment_date_from');
-		$appointment_date_to     = $this->input->post('appointment_date_to');
-
-		$appointment_Time_start     = $this->input->post('appointment_Time_start');
-		$appointment_Time_to     = $this->input->post('appointment_Time_to');
-
-		if($sel_status != '' && $sel_status != 0)
+		if($sel_Employee != '' && $sel_Employee != 0)
 		{
-			$WhereCondition .= "AND UDA.appointment_status_id = '$sel_status'";
+			$WhereCondition .= "AND tuwr.user_id = '$sel_Employee'";
 		} 
 
-		if($sel_patient != '' && $sel_patient != 0)
+		if($sel_status != ''  && $sel_status != 0 )
 		{
-			$WhereCondition .= "AND UDA.user_id = '$sel_patient'";
+			if($sel_status == 'Pending')
+			{
+				$WhereCondition .= "AND tuwr.user_WeeklyReport_isapproved != 1"; 
+			}
+			else
+			{
+				$WhereCondition .= "AND tuwr.user_WeeklyReport_isapproved = 1"; 
+			}
 		} 
 
-		if(($appointment_date_from != "" && $appointment_date_to !="" && $appointment_date_from <= $appointment_date_to) )
+		if(($Report_date_from != "" && $Report_date_to !="" && $Report_date_from <= $Report_date_to) )
 		{	
-			$Formated_appointment_date_from = date('Y-m-d', strtotime($appointment_date_from));
-			$Formated_appointment_date_to = date('Y-m-d', strtotime($appointment_date_to));
-
-			$WhereCondition .= "AND UDA.appointment_date BETWEEN '$Formated_appointment_date_from' AND '$Formated_appointment_date_to' ";
-		}
-
-		if(($appointment_Time_start != "" && $appointment_Time_to !="" && $appointment_Time_start < $appointment_Time_to) )
-		{	
-			$Formated_appointment_Time_start = date('h:i:s', strtotime($appointment_Time_start));
-			$Formated_appointment_Time_to = date('h:i:s', strtotime($appointment_Time_to));
-
-			$WhereCondition .= "AND UDA.appointment_time BETWEEN '$Formated_appointment_Time_start' AND '$Formated_appointment_Time_to' ";
+			$Formated_Report_date_from = date('Y-m-d', strtotime($Report_date_from));
+			$Formated_Report_date_to = date('Y-m-d', strtotime($Report_date_to));
+			$WhereCondition .= "AND tuwr.user_WeeklyReport_Startdate BETWEEN '$Formated_Report_date_from' AND '$Formated_Report_date_to' ";
 		}
 
 		$query  = $this->db->query(" 	
-									SELECT * FROM `tbl_user_weeklyreport`
+									SELECT * ,
+									(
+									    SELECT tu.user_name
+									    FROM tbl_user tu
+									    WHERE tu.user_id = tuwr.user_id
+									) as employee_name
+									FROM tbl_user_weeklyreport tuwr
+									WHERE 1 =1 
+									$WhereCondition
+									ORDER BY tuwr.user_WeeklyReport_Startdate DESC
 									");
 		
 		$result = $query->result_array();			
