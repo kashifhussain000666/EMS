@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Add Employeee Page</title>
+  <title>Add Employeee Page</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -42,11 +42,21 @@
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="../../index2.html"><b>EMP</b></a>
+    <a href="../../index2.html"><b>EMS</b></a>
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Register a new membership</p>
+    <p class="login-box-msg">
+      <?php if(isset($Employee_id) && $Employee_id != '')
+      {
+        echo "Update Employee";
+      }
+      else
+      {
+        echo "Add a New Employee";
+      }
+      ?>
+    </p>
     <?php 
     if($error != "")
     {
@@ -66,112 +76,138 @@
         }
     ?>
 
+
+    <?php
+
+    $txt_user_name = '' ;
+    $txt_user_email             = '';
+    $txt_user_phone             = '';
+    $txt_user_password          = '';
+    $txt_retype_user_password   = '';
+    $txt_user_salaryPerHour     = '';
+    $txt_user_city              = '';
+    $txt_user_state             = '';
+    $txt_user_zip               = '';
+    $txt_user_country           = '';
+
+    if(isset($_POST['hdn_btn_createUser'])=="")
+    {
+      if(isset($Employee_id) && $Employee_id != '')
+      {
+        foreach($user_infos as $user_info)
+        {
+            $txt_user_name            = $user_info['user_name'];
+            $txt_user_email           = $user_info['user_email'];
+            $txt_user_phone           = $user_info['user_phone'];
+            $txt_user_password        = $user_info['user_password'];
+            $txt_retype_user_password = $user_info['user_password'];
+            $txt_user_salaryPerHour   = $user_info['user_salaryPerHour'];
+            $txt_user_city            = $user_info['user_city'];
+            $txt_user_state           = $user_info['user_state'];
+            $txt_user_zip             = $user_info['user_zip'];
+            $txt_user_country         = $user_info['user_country'];
+        }
+      }
+    }
+    
+
+    ?>
+
     <form class="" method="post" id="form_signup" action="">
+      <?php 
+      if(isset($Employee_id) && $Employee_id != '')
+      {
+      ?>
+        <input type="hidden" name="Employee_id" value="<?=$Employee_id ?>">
+      <?php
+      }
+      ?>
       <div class="form-group has-feedback">
-        <input type="text" name="txt_first_name" value="<?php echo $this->input->post('txt_first_name'); ?>" id="txt_first_name" class="form-control" placeholder="First Name">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        <span id="Error_first_name" class="spanError"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="text" name="txt_last_name" value="<?php echo $this->input->post('txt_last_name'); ?>" id="txt_last_name" class="form-control" placeholder="Last Name">
-        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        <span id="Error_last_name" class="spanError"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="text" name="txt_user_name" value="<?php echo $this->input->post('txt_user_name'); ?>" id="txt_user_name" class="form-control" placeholder="User Name">
+        <input type="text" name="txt_user_name" value="<?php echo $txt_user_name; ?>" id="txt_user_name" class="form-control" placeholder="Name">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <span id="Error_user_name" class="spanError"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" id="txt_email" value="<?php echo $this->input->post('txt_email'); ?>" name="txt_email" class="form-control" placeholder="Email" >
+        <input type="email" id="txt_user_phone" value="<?php echo $txt_user_phone; ?>" name="txt_user_phone" class="form-control" placeholder="Phone" >
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_phone" class="spanError"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="email" id="txt_user_email" value="<?php echo $txt_user_email; ?>" name="txt_user_email" class="form-control" placeholder="Email" >
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        <span id="Error_txt_email" class="spanError"></span>
+        <span id="Error_user_email" class="spanError"></span>
       </div>
       <div class="form-group has-feedback">
-        
-        <input class="form-control" type="text" id="phoneNo" placeholder="0300-1234567" value="<?php echo $this->input->post('phoneNo'); ?>" minlength="12" name="phoneNo" maxlength="12" data-keeper-lock-id="k-xgx9uyqihi">
-        <span class="glyphicon fa-mobile-phone form-control-feedback"></span>
-        <span id="Error_phoneNo" class="spanError"></span>
+        <input type="password" class="form-control" name="txt_user_password" id="txt_user_password" value="<?php echo $txt_user_password; ?>" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span id="Error_user_password" class="spanError"></span>
       </div>
       <div class="form-group has-feedback">
-        
-        <input class="form-control" type="text" id="txt_cnic" minlength="15" placeholder="00000-0000000-0" value="<?php echo $this->input->post('txt_cnic'); ?>" name="txt_cnic" maxlength="15" data-keeper-lock-id="k-982izj23ypm">
-        <span class="glyphicon fa-mobile-phone form-control-feedback"></span>
-        <span id="Error_cnic" class="spanError"></span>
+        <input type="password" class="form-control" name="txt_retype_user_password" id="txt_retype_user_password" value="<?php echo $txt_retype_user_password; ?>" placeholder="Retype password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span id="Error_retype_user_password" class="spanError"></span>
       </div>
-      
       <div class="form-group has-feedback">
-          <input class="form-control" type="text" id="sel_city" minlength="15" placeholder="00000-0000000-0" value="<?php echo $this->input->post('sel_city'); ?>" name="sel_city" maxlength="15" data-keeper-lock-id="k-982izj23ypm">
-          <span class="glyphicon glyphicons-parents form-control-feedback"></span>
-          <span id="Error_sel_city" class="spanError"></span>
+        <input type="number" class="form-control" name="txt_user_salaryPerHour" id="txt_user_salaryPerHour" value="<?php echo $txt_user_salaryPerHour; ?>" placeholder="salary Per Hour">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_salaryPerHour" class="spanError"></span>
       </div>
-      
       <div class="form-group has-feedback">
-          <select name="user_type" id="user_type" onchange="funcHideShowData()" class="form-control" required="">
+        <input type="text" class="form-control" name="txt_user_city" id="txt_user_city" value="<?php echo $txt_user_city; ?>" placeholder="City">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_city" class="spanError"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="txt_user_state" id="txt_user_state" value="<?php echo $txt_user_state; ?>" placeholder="State">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_state" class="spanError"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="txt_user_zip" id="txt_user_zip" value="<?php echo $txt_user_zip; ?>" placeholder="Zip">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_zip" class="spanError"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="txt_user_country" id="txt_user_country" value="<?php echo $txt_user_country; ?>" placeholder="Country">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span id="Error_user_country" class="spanError"></span>
+      </div>
+     <!--  <div class="form-group has-feedback">
+          <select name="user_department_id" id="user_department_id" onchange="funcHideShowData()" class="form-control" required="">
               <option value="0" selected="">-- Account Type --</option>
                <?php 
-                foreach($user_designations as $user_designation)
+                foreach($AllDesignations as $AllDesignation)
                 {
                 ?>
-                  <option value="<?=$user_designation['user_designation_id'] ?>" <?php if($this->input->post('user_type') == $user_designation['user_designation_name']){ echo "selected" ;}  ?>><?php echo $user_designation['user_designation_name']; ?></option>
+                  <option value="<?=$AllDepartment['user_designation_id'] ?>" <?php if($this->input->post('user_department_id') == $AllDepartment['user_designation_name']){ echo "selected" ;}  ?>><?php echo $AllDepartment['user_designation_name']; ?></option>
                 <?php 
                 }
                 ?>
           </select>
           <span class="glyphicon glyphicons-parents form-control-feedback"></span>
           <span id="Error_user_type" class="spanError"></span>
-      </div>
-
+      </div> -->
       
-
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="txt_password" id="txt_password" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        <span id="Error_password" class="spanError"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="txt_retype_password" id="txt_retype_password" placeholder="Retype password">
-        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-        <span id="Error_retype_password" class="spanError"></span>
-      </div>
-      <!-- phone mask 
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon">
-            <i class="fa fa-phone"></i>
-          </div>
-          <input type="text" class="form-control" id="txt_ph_no" name="txt_ph_no" data-inputmask='"mask": "+99-999-9999999"' value="<?php echo $this->input->post('txt_ph_no'); ?>" data-mask>
-                  </div>
-                  <span id="Error_ph_no" class="spanError"></span>
-
-        <!-- /.input group -->
       <!--</div>-->
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox"> I agree to the <a href="#">terms</a>
-            </label>
-          </div>
-        </div>
         <!-- /.col -->
         <div class="col-xs-4">
           <input type="hidden" name="hdn_btn_createUser" value="hdn_btn_createUser"/>
-          <input type="button"  class="btn btn-primary btn-block btn-flat" id="btn_createUser" name="btn_createUser" value="Register">
+          <input type="button"  class="btn btn-primary btn-block btn-flat" id="btn_createUser" name="btn_createUser" value="
+          <?php if(isset($Employee_id) && $Employee_id != '')
+      {
+        echo "Update";
+      }
+      else
+      {
+        echo "Add";
+      }
+      ?>
+          ">
         </div>
         <!-- /.col -->
       </div>
     </form>
-
-    <!--<div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
-        Google+</a>
-    </div>-->
-
-<!--     <a href="<?php echo base_url(); ?> " class="text-center">I already have a membership</a> -->
   </div>
   <!-- /.form-box -->
 </div>
@@ -222,62 +258,89 @@
   //function ValidateSignup()
   $("#btn_createUser").click(function()
   {
-    var txt_first_name      = $("#txt_first_name").val();
-    var txt_last_name       = $("#txt_last_name").val();
-    var txt_user_name       = $("#txt_user_name").val();
-    var txt_password        = $("#txt_password").val();
-    var txt_retype_password = $("#txt_retype_password").val();
-    var phoneNo             = $("#phoneNo").val();
-    var txt_cnic             = $("#txt_cnic").val();
-    var user_type              = $('#user_type').val();
-    var txt_email              = $('#txt_email').val();
-    var sel_city              = $('#sel_city').val();
-    
-
-    
-
+    var txt_user_name      = $("#txt_user_name").val();
+    var txt_user_email      = $("#txt_user_email").val();
+    var txt_user_phone       = $("#txt_user_phone").val();
+    var txt_user_password        = $("#txt_user_password").val();
+    var txt_retype_user_password = $("#txt_retype_user_password").val();
+    var txt_user_salaryPerHour             = $("#txt_user_salaryPerHour").val();
+    var txt_user_city             = $("#txt_user_city").val();
+    var txt_user_state             = $('#txt_user_state').val();
+    var txt_user_zip              = $('#txt_user_zip').val();
+    var txt_user_country             = $('#txt_user_country').val();
+  
     $(".spanError").html("");
     $(".form-control").removeClass( "Errorborderclass" );
 
-    if(txt_first_name == '')
-    {
-      
-      $("#Error_first_name").html("Please enter first name");
-      $("#txt_first_name").addClass( "Errorborderclass" );
-      return false;
-    }
-    if(txt_last_name == '')
-    {
-      
-      $("#Error_last_name").html("Please enter last name");
-      $("#txt_last_name").addClass( "Errorborderclass" );
-      return false;
-    }
     if(txt_user_name == '')
     {
-      
-      $("#Error_user_name").html("Please enter username");
+      $("#Error_user_name").html("Please enter name");
       $("#txt_user_name").addClass( "Errorborderclass" );
       return false;
     }
-    if( txt_user_name != '')
+    if(txt_user_phone == '')
+    {
+      $("#Error_user_phone").html("Please enter phone");
+      $("#txt_user_phone").addClass( "Errorborderclass" );
+      return false;
+    }
+    if(txt_user_phone != "" && txt_user_phone.length < 10)
+    {
+      $("#Error_user_phone").html("Invalid Phone No");
+      $("#txt_user_phone").addClass( "Errorborderclass" );
+      return false;
+    }
+    if(txt_user_email == '')
+    {
+      $("#Error_user_email").html("Please enter Email");
+      $("#txt_user_email").addClass( "Errorborderclass" );
+      return false;
+    }
+
+    if(txt_user_email != '')
+    {
+      var validations ={
+      email: [/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/, 'Please enter a valid email address']
+        };
+      validation = new RegExp(validations['email'][0]);
+      if (!validation.test(txt_user_email)){
+            $("#Error_user_email").html("Invalid Email Format");
+            $("#txt_user_email").addClass( "Errorborderclass" );
+            return false;
+      }
+    }
+
+    if( txt_user_email != '')
     {
       //loading('start');  
         $.ajax(
          {
-          url:BaseUrlSite+'signup/IsUserNameAlreadyExist',
+          url:BaseUrlSite+'Employee/IsEmailAlreadyExist',
           data:{
               isAjaxCall    :'true',
-              txt_user_name: txt_user_name,
-              Isajaxcall : 1
+              txt_user_email: txt_user_email,
+              Isajaxcall : 1,
+              Employee_id : 
+              <?php 
+              if(isset($Employee_id) && $Employee_id != '')
+              {
+              ?>
+              <?=$Employee_id ?>
+              <?php
+              }
+              else
+              {
+                echo 0;
+              }
+              ?>
             },
             type:'POST',
             success:function(data)
             {
               if(data=='Already Exist')
               {
-                $("#Error_user_name").html("This user name already exist");
-                $("#txt_user_name").addClass( "Errorborderclass" );
+                $("#Error_user_email").html("This email already exist");
+                $("#txt_user_email").addClass( "Errorborderclass" );
                 return false;
               }
               else
@@ -285,97 +348,80 @@
                 ValidateOnSuccessfunction();
               }
               
-             // loading('end');  
             } 
         });
       }
 
-    
-   // $("#form_signup").submit();
   });
+    
+    
 
   function ValidateOnSuccessfunction()
   {
-    var txt_password        = $("#txt_password").val();
-    var txt_retype_password = $("#txt_retype_password").val();
-    var phoneNo             = $("#phoneNo").val();
-    var txt_cnic             = $("#txt_cnic").val();
-    var user_type              = $('#user_type').val();
-    var txt_email              = $('#txt_email').val();
-    var sel_city              = $('#sel_city').val();
-    var sel_doctor_category   = $('#sel_doctor_category').val();
-
-    var validations ={
-    email: [/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/, 'Please enter a valid email address']
-      };
-    validation = new RegExp(validations['email'][0]);
-
-    if(txt_email == "" )
+    var txt_user_password        = $("#txt_user_password").val();
+    var txt_retype_user_password = $("#txt_retype_user_password").val();
+    var txt_user_salaryPerHour             = $("#txt_user_salaryPerHour").val();
+    var txt_user_city             = $("#txt_user_city").val();
+    var txt_user_state             = $('#txt_user_state').val();
+    var txt_user_zip              = $('#txt_user_zip').val();
+    var txt_user_country             = $('#txt_user_country').val();
+    if(txt_user_password == '')
     {
-      $("#Error_txt_email").html("Invalid Email");
-      $("#txt_email").addClass( "Errorborderclass" );
+      $("#Error_user_password").html("Please enter password");
+      $("#txt_user_password").addClass( "Errorborderclass" );
       return false;
     }
-    if (!validation.test(txt_email)){
-          $("#Error_txt_email").html("Invalid Email Format");
-          $("#txt_email").addClass( "Errorborderclass" );
-          return false;
-    }
-    if(phoneNo == "" || phoneNo.length < 12)
+    if(txt_user_password.length < 8)
     {
-      $("#Error_phoneNo").html("Invalid Phone No");
-      $("#phoneNo").addClass( "Errorborderclass" );
+      $("#Error_user_password").html("Pasword must be atleast 8 characters");
+      $("#txt_user_password").addClass( "Errorborderclass" );
       return false;
     }
-    if(txt_cnic == "" || txt_cnic.length < 13)
+    if(txt_retype_user_password == '')
     {
-      $("#Error_cnic").html("Invalid CNIC");
-      $("#txt_cnic").addClass( "Errorborderclass" );
+      $("#Error_retype_user_password").html("Please retype password");
+      $("#txt_retype_user_password").addClass( "Errorborderclass" );
       return false;
     }
-    if(sel_city == "" || sel_city == 0)
+    if(txt_retype_user_password != txt_user_password)
     {
-      $("#Error_sel_city").html("Select City");
-      $("#sel_city").addClass( "Errorborderclass" );
+      $("#Error_retype_user_password").html("Password not match");
+      $("#txt_retype_user_password").addClass( "Errorborderclass" );
       return false;
     }
-    if(user_type == "" || user_type == 0)
-    {
-      $("#Error_user_type").html("Select Account type");
-      $("#user_type").addClass( "Errorborderclass" );
-      return false;
-    }
-    if(user_type == 1 && (sel_doctor_category == "" || sel_doctor_category == 0))
-    {
-      $("#Error_sel_doctor_category").html("Select category");
-      $("#sel_doctor_category").addClass( "Errorborderclass" );
-      return false;
-    }
-    
-    if(txt_password == '')
+    if(txt_user_salaryPerHour == '')
     {
       
-      $("#Error_password").html("Please enter password");
-      $("#txt_password").addClass( "Errorborderclass" );
+      $("#Error_user_salaryPerHour").html("Please enter salaryPerHour");
+      $("#txt_user_salaryPerHour").addClass( "Errorborderclass" );
       return false;
     }
-    if(txt_password.length < 8)
+    if(txt_user_city == '')
     {
-      $("#Error_password").html("Pasword must be atleast 8 characters");
-      $("#txt_password").addClass( "Errorborderclass" );
+      
+      $("#Error_user_city").html("Please enter city");
+      $("#txt_user_city").addClass( "Errorborderclass" );
       return false;
     }
-    if(txt_retype_password == '')
+    if(txt_user_state == '')
     {
-      $("#Error_retype_password").html("Please retype password");
-      $("#txt_retype_password").addClass( "Errorborderclass" );
+      
+      $("#Error_user_state").html("Please enter state");
+      $("#txt_user_state").addClass( "Errorborderclass" );
       return false;
     }
-
-    if(txt_retype_password != txt_password)
+    if(txt_user_zip == '')
     {
-      $("#Error_retype_password").html("Password not match");
-      $("#txt_retype_password").addClass( "Errorborderclass" );
+      
+      $("#Error_user_zip").html("Please enter zip");
+      $("#txt_user_zip").addClass( "Errorborderclass" );
+      return false;
+    }
+    if(txt_user_country == '')
+    {
+      
+      $("#Error_user_country").html("Please enter Country");
+      $("#txt_user_country").addClass( "Errorborderclass" );
       return false;
     }
     else
