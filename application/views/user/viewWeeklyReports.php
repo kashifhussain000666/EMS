@@ -133,7 +133,7 @@ $this->load->view('includes/header.php'); // load the header HTML
 
                   <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
 				  <?php if( $IsShowAddWeeklyBtn ){?>
-				  <a href="/Employee/AddWeekData/" style="height:33px; margin-left:3px" class="btn btn-sm btn-info btn-flat">Add Weekly Data</a>
+				  <a href="<?php echo base_url().'/Employee/AddWeekData/';?>" style="height:33px; margin-left:3px" class="btn btn-sm btn-info btn-flat">Add Weekly Data</a>
 				  <?php } ?>
                   <!-- End div date range picker --> 
                 </div>
