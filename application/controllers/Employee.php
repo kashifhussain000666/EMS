@@ -31,12 +31,159 @@ class Employee extends CI_Controller
   {
     $data[] = "";
     $this->load->model('model_employee');
+	
+	$user_id = $this->session->userdata('user_id');
+	$data['sel_Employee'] = $this->input->post('sel_Employee');
+	if( $this->session->userdata('user_designation_id') == 3 )
+	{
+		$data['sel_Employee'] = $user_id;			
+	}
 
-    $data['WeeklyReports'] = $this->model_employee->GetWeeklyReports();
+
+    $data['WeeklyReports'] = $this->model_employee->GetWeeklyReports($data['sel_Employee']);
     $data['AllEmployees'] = $this->model_employee->GetAllEmployees();
 
+	$data['IsShowAddWeeklyBtn'] = $this->session->userdata('user_designation_id') == 3;
+	$data['IsEditAllow'] = $this->session->userdata('user_designation_id') == 2;
     $this->load->view('user/viewWeeklyReports',$data);
   }
+  public function MarkApproved()
+  {
+		$this->load->model('model_employee');
+		$user_WeeklyReport_id = $_POST['user_WeeklyReport_id'];
+		$WhereArray = array();
+		$WhereArray['user_WeeklyReport_id'] = $user_WeeklyReport_id;
+		$WeeklyReportData['user_WeeklyReport_isapproved'] = 1;
+		$this->model_employee->UpdateWeeklyReportData($WhereArray,$WeeklyReportData);
+  }
+  
+  public function AddWeekData()
+  {
+    $data[] = "";
+    $this->load->model('model_employee');
+	$day = date('w');
+	$data['WeekStart'] = date('d-m-Y', strtotime('-'.$day.' days'));
+	$data['WeekEnd'] = date('d-m-Y', strtotime('+'.(6-$day).' days'));
+	$data['Employee_id'] = $this->session->userdata('user_id');
+	
+	if (isset($_REQUEST['WeekStart']))
+		$data['WeekStart'] = $_REQUEST['WeekStart'];
+	if (isset($_REQUEST['WeekEnd']))
+		$data['WeekEnd'] = $_REQUEST['WeekEnd'];
+	if (isset($_REQUEST['Employee_id']))
+		$data['Employee_id'] = $_REQUEST['Employee_id'];
+	
+	$UserWhereArray['user_id'] = $data['Employee_id'];
+	$QEmployee = $this->model_employee->GetEmployeeData($UserWhereArray)[0];
+	
+	if( isset($_POST['btn_submitTimes_Add']) )
+	{
+		$date = $data['WeekStart'];
+		$timeSpentArray = array();
+		while (strtotime($date) <= strtotime($data['WeekEnd'])) 
+		{
+			$timeSpentArray[] = $_POST['timeSpent'.date ("Ymd",strtotime($date))];;
+			$date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+		}
+		
+		$this->db->trans_start();
+		$WeeklyReportData['user_id'] = $data['Employee_id'];
+		$WeeklyReportData['user_WeeklyReport_Startdate'] = $data['WeekStart'];
+		$WeeklyReportData['user_WeeklyReport_Enddate'] = $data['WeekEnd'];
+		$WeeklyReportData['user_WeeklyReport_isapproved'] = 0;
+		$WeeklyReportData['user_WeeklyReport_TimeSpend'] = $this->AddPlayTime($timeSpentArray);
+		$WeeklyReportData['user_WeeklyReport_SalaryPerHour'] = $QEmployee['user_salaryPerHour'];
+		$WeeklyReportData['user_WeeklyReport_TotalSalary'] = $QEmployee['user_salaryPerHour'] * $this->AddPlayTime($timeSpentArray);
+		$user_WeeklyReport_id = $this->model_employee->SaveWeeklyReportData($WeeklyReportData);
+		
+		$date = $data['WeekStart'];
+		while (strtotime($date) <= strtotime($data['WeekEnd'])) 
+		{
+			$ReportData['user_id'] = $data['Employee_id'];
+			$ReportData['user_DailyReport_date'] = date ("Y-m-d",strtotime($date));
+			$ReportData['user_DailyReport_TimeStart'] = $_POST['HrFrom'.date ("Ymd",strtotime($date))];
+			$ReportData['user_DailyReport_TimeEnd'] = $_POST['HrTo'.date ("Ymd",strtotime($date))];
+			$ReportData['user_WeeklyReport_id'] = $user_WeeklyReport_id;
+			$ReportData['user_DailyReport_isapproved'] = 0;
+			$ReportData['user_DailyReport_TimeSpend'] = $_POST['timeSpent'.date ("Ymd",strtotime($date))];;
+			$this->model_employee->SaveReportData($ReportData);
+			
+			$date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+		}
+		$this->db->trans_complete();
+	}
+	elseif( isset($_POST['btn_submitTimes_Update']) )
+	{
+		$date = $data['WeekStart'];
+		$timeSpentArray = array();
+		while (strtotime($date) <= strtotime($data['WeekEnd'])) 
+		{
+			$timeSpentArray[] = $_POST['timeSpent'.date ("Ymd",strtotime($date))];;
+			$date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+		}
+		
+		$this->db->trans_start();
+		$WhereArray = array();
+		$WhereArray['user_id'] = $data['Employee_id'];
+		$WhereArray['user_WeeklyReport_Startdate'] = $data['WeekStart'];
+		$WhereArray['user_WeeklyReport_Enddate'] = $data['WeekEnd'];
+		$WeeklyReportData['user_WeeklyReport_TimeSpend'] = $this->AddPlayTime($timeSpentArray);
+		$WeeklyReportData['user_WeeklyReport_SalaryPerHour'] = $QEmployee['user_salaryPerHour'];
+		$WeeklyReportData['user_WeeklyReport_TotalSalary'] = $QEmployee['user_salaryPerHour'] * $this->AddPlayTime($timeSpentArray);
+		$this->model_employee->UpdateWeeklyReportData($WhereArray,$WeeklyReportData);
+		
+		$date = $data['WeekStart'];
+		$WhereArray = array();
+		while (strtotime($date) <= strtotime($data['WeekEnd'])) 
+		{
+			$WhereArray['user_id'] = $data['Employee_id'];
+			$WhereArray['user_DailyReport_date'] = date ("Y-m-d",strtotime($date));
+			$ReportData['user_DailyReport_TimeStart'] = $_POST['HrFrom'.date ("Ymd",strtotime($date))];
+			$ReportData['user_DailyReport_TimeEnd'] = $_POST['HrTo'.date ("Ymd",strtotime($date))];
+			$ReportData['user_DailyReport_isapproved'] = 0;
+			$ReportData['user_DailyReport_TimeSpend'] = $_POST['timeSpent'.date ("Ymd",strtotime($date))];;
+			$this->model_employee->UpdateReportData($WhereArray,$ReportData);
+			
+			$date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+		}
+		$this->db->trans_complete();
+	}
+	
+	$data['SavedReportData'] = $this->model_employee->GetSavedReportData($data['Employee_id'],date ("Y-m-d",strtotime($data['WeekStart'])),date ("Y-m-d",strtotime($data['WeekEnd'])));
+	$WhereArray = array();
+	$WhereArray['user_id'] = $data['Employee_id'];
+	$WhereArray['user_WeeklyReport_Startdate'] = date ("Y-m-d",strtotime($data['WeekStart']));
+	$WhereArray['user_WeeklyReport_Enddate'] = date ("Y-m-d",strtotime($data['WeekEnd']));
+	$data['QWeeklyReportData'] = $this->model_employee->GetWeeklyReportData($WhereArray);
+	
+	$data['IsWeekAdded'] = count($data['SavedReportData']) > 0;
+	$data['IsEditAllow'] = $this->session->userdata('user_designation_id') == 2; // 2 director
+	if( count($data['QWeeklyReportData']) > 0 && $data['QWeeklyReportData'][0]['user_WeeklyReport_isapproved'] == 1 )
+	{
+		$data['IsEditAllow'] = false;
+	}
+	
+	$this->load->view('user/AddWeekData',$data);
+	}	
+	function AddPlayTime($times) {
+
+		$all_seconds=0;
+		foreach ($times as $time) {
+			list($hour, $minute, $second) = explode(':', $time);
+			$all_seconds += $hour * 3600;
+			$all_seconds += $minute * 60;
+			$all_seconds += $second;
+
+		}
+
+		$total_minutes = floor($all_seconds/60);
+		$seconds = $all_seconds % 60;
+		$hours = floor($total_minutes / 60); 
+		$minutes = $total_minutes % 60;
+
+		// returns the time already formatted
+		return $hours;
+	}
 
   public function AddEditEmployee()
   {

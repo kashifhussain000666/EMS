@@ -1,4 +1,4 @@
-
+	
 <?php
 $this->load->view('includes/header.php'); // load the header HTML 
 ?>
@@ -27,7 +27,7 @@ $this->load->view('includes/header.php'); // load the header HTML
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Employees 
+        Weekly Reports 
         <small></small>
       </h1>
       <ol class="breadcrumb">
@@ -42,9 +42,9 @@ $this->load->view('includes/header.php'); // load the header HTML
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
-            <div class="box-header">
+            <!--<div class="box-header">
               <h3 class="box-title">View All WeeklyReports</h3>
-            </div>
+            </div>-->
             <!-- /.box-header -->
             <div class="box-body">
 
@@ -68,10 +68,7 @@ $this->load->view('includes/header.php'); // load the header HTML
                   <div class="form-group"> -->
                   <!-- Div Date Range picker --> 
 
-                   <?php
-                    $sel_Employee = $this->input->post('sel_Employee');
-                  ?>
-                  <div class="" style="width:15%;float: left;margin-right: 10px;">
+                  <div class="<?=$this->session->userdata('user_designation_id') == 3?'hide':''?>" style="width:15%;float: left;margin-right: 10px;">
                     <select class="form-control select2" name="sel_Employee" id="sel_Employee" style="">
                       <option value="0">All Employees</option>
                       <?php 
@@ -135,6 +132,9 @@ $this->load->view('includes/header.php'); // load the header HTML
                  </div>
 
                   <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
+				  <?php if( $IsShowAddWeeklyBtn ){?>
+				  <a href="/Employee/AddWeekData/" style="height:33px; margin-left:3px" class="btn btn-sm btn-info btn-flat">Add Weekly Data</a>
+				  <?php } ?>
                   <!-- End div date range picker --> 
                 </div>
               </div>
@@ -154,7 +154,7 @@ $this->load->view('includes/header.php'); // load the header HTML
                   <th>Total Salary</th>
                   <th>Date Created</th>
                   <th>Status</th>
-                  <th>Action</th>
+                  <?=$IsEditAllow?'<th>Action</th>':''?>
                 </tr>
                 </thead>
                 <tbody>
@@ -187,21 +187,23 @@ $this->load->view('includes/header.php'); // load the header HTML
                     if($WeeklyReport['user_WeeklyReport_isapproved'] == 1 )
                     {
                     ?> 
-                    <button class="btn  btn-warning btn-sm">Approved</button>
+                    <span class="label label-success">Approved</span>
                     <?php
                     }
                     else
                     { 
                     ?>
-                    <button class="btn  btn-danger btn-sm">Pending</button>
+                    <button onclick="MarkApproved(<?=$WeeklyReport['user_WeeklyReport_id']?>)" class="btn  btn-danger btn-sm">Pending</button>
                     <?php
                     }
                     ?>
                       
                     </td>
-                  <td>
-                    <a href="<?php echo base_url().'Employee/AddEditWeeklyReport/'.$WeeklyReport['user_WeeklyReport_id']; ?> " target="_blank"  class="btn  btn-warning btn-sm">Update/Approve</a>
-                  </td>
+					<?php if($IsEditAllow){?>
+					  <td>
+						<a href="<?php echo base_url().'Employee/AddWeekData/?Employee_id='.$WeeklyReport['user_id'].'&WeekStart='.date('d-m-Y', strtotime($user_WeeklyReport_Startdate)).'&WeekEnd='.date('d-m-Y', strtotime($user_WeeklyReport_Enddate)); ?> " target="_blank"  class="btn  btn-warning btn-sm">Update/Approve</a>
+					  </td>
+					<?php }?>
                   
                 </tr>
                 <?php
@@ -271,27 +273,18 @@ $this->load->view('includes/footer'); // load the footer HTML
     // })
   })
 
-  function funChangeAppointmentStatus(appointment_id , appointment_status_id , CancelAppointment)
+  function MarkApproved(user_WeeklyReport_id)
   {
     var confirmmsg = "";
-    if(CancelAppointment == 1)
-    {
-      confirmmsg = "Are you sure you want to cancel this Appointment?";
-    }
-    else
-    {
-      confirmmsg = "Are you sure you want to approve this Appointment?";
-    }
+    confirmmsg = "Are you sure you want to approve this?";
+    
       if(confirm(confirmmsg))
       {
           $.ajax(
          {
-          url:BaseUrlSite+'appointment/UpdateAppointmentStatus',
+          url:BaseUrlSite+'Employee/MarkApproved',
           data:{
-              isAjaxCall    :'true',
-              appointment_id: appointment_id,
-              appointment_status_id : appointment_status_id,
-              CancelAppointment : CancelAppointment
+              user_WeeklyReport_id: user_WeeklyReport_id
             },
             type:'POST',
             success:function(data)

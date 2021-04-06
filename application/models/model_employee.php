@@ -166,43 +166,86 @@ class model_employee extends CI_Model
 		$result = $query->result_array();			
 		return $result;
 	}
+	public function GetSavedReportData($user_id,$DateFrom,$DateTo)
+	{
+	  	$query  = $this->db->query(" 	
+	  									SELECT r.*
+										FROM ems.tbl_user_dailyreport r
+										where r.user_id = $user_id
+										and r.user_DailyReport_date >= '$DateFrom'
+										and r.user_DailyReport_date <= '$DateTo'
+
+									");
+		
+		$result = $query->result_array();			
+		return $result;
+	}
+	public function GetEmployeeData($WhereArray)
+	{
+		$this->db->where($WhereArray);
+		return $this->db->get('tbl_user')->result_array();
+	}
+	public function GetWeeklyReportData($WhereArray)
+	{
+		$this->db->where($WhereArray);
+		return $this->db->get('tbl_user_weeklyreport')->result_array();
+	}
+	//Function check if employee already exist
+	public function SaveReportData($ReportData)
+	{
+		$this->db->insert('tbl_user_dailyreport',$ReportData);
+		return $this->db->insert_id();
+	}
+	public function UpdateReportData($WhereArray,$ReportData)
+	{
+		$this->db->where($WhereArray);
+		$this->db->update('tbl_user_dailyreport',$ReportData);
+	}
+	public function SaveWeeklyReportData($ReportData)
+	{
+		$this->db->insert('tbl_user_weeklyreport',$ReportData);
+		return $this->db->insert_id();
+	}
+	public function UpdateWeeklyReportData($WhereArray,$ReportData)
+	{
+		$this->db->where($WhereArray);
+		$this->db->update('tbl_user_weeklyreport',$ReportData);
+	}
 
 
-	public function GetWeeklyReports()
+	public function GetWeeklyReports($sel_Employee)
 	{	
 		$WhereCondition = "";
 		$user_id = $this->session->userdata('user_id');
 
-		$sel_Employee     = $this->input->post('sel_Employee');
+		
 		$sel_status     = $this->input->post('sel_status');
 		$Report_date_from     = $this->input->post('Report_date_from');
 		$Report_date_to     = $this->input->post('Report_date_to');
-
 
 		if($sel_Employee != '' && $sel_Employee != 0)
 		{
 			$WhereCondition .= "AND tuwr.user_id = '$sel_Employee'";
 		} 
 
-		if($sel_status != ''  && $sel_status != 0 )
+		if($sel_status != ''  && $sel_status != '0' )
 		{
 			if($sel_status == 'Pending')
 			{
-				$WhereCondition .= "AND tuwr.user_WeeklyReport_isapproved != 1"; 
+				$WhereCondition .= " AND tuwr.user_WeeklyReport_isapproved != 1"; 
 			}
 			else
 			{
-				$WhereCondition .= "AND tuwr.user_WeeklyReport_isapproved = 1"; 
+				$WhereCondition .= " AND tuwr.user_WeeklyReport_isapproved = 1"; 
 			}
 		} 
-
 		if(($Report_date_from != "" && $Report_date_to !="" && $Report_date_from <= $Report_date_to) )
 		{	
 			$Formated_Report_date_from = date('Y-m-d', strtotime($Report_date_from));
 			$Formated_Report_date_to = date('Y-m-d', strtotime($Report_date_to));
 			$WhereCondition .= "AND tuwr.user_WeeklyReport_Startdate BETWEEN '$Formated_Report_date_from' AND '$Formated_Report_date_to' ";
 		}
-
+		
 		$query  = $this->db->query(" 	
 									SELECT * ,
 									(
