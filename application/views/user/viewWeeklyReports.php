@@ -192,8 +192,9 @@ $this->load->view('includes/header.php'); // load the header HTML
                     }
                     else
                     { 
+
                     ?>
-                    <button onclick="MarkApproved(<?=$WeeklyReport['user_WeeklyReport_id']?>)" class="btn  btn-danger btn-sm">Pending</button>
+                    <button <?php if($IsApproveAllow){ ?> onclick="MarkApproved(<?=$WeeklyReport['user_WeeklyReport_id']?>)"<?php } ?> class="btn  btn-danger btn-sm">Pending</button>
                     <?php
                     }
                     ?>

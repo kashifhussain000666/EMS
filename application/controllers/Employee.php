@@ -44,7 +44,8 @@ class Employee extends CI_Controller
     $data['AllEmployees'] = $this->model_employee->GetAllEmployees();
 
 	$data['IsShowAddWeeklyBtn'] = $this->session->userdata('user_designation_id') == 3;
-	$data['IsEditAllow'] = $this->session->userdata('user_designation_id') == 2;
+	$data['IsEditAllow'] = $this->session->userdata('user_designation_id');
+  $data['IsApproveAllow'] = $this->session->userdata('user_designation_id') == 2;
     $this->load->view('user/viewWeeklyReports',$data);
   }
   public function MarkApproved()
