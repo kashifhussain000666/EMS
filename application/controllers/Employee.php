@@ -451,5 +451,129 @@ class Employee extends CI_Controller
     }
   }
 
+  public function Leaves()
+  {
+    $data[] = "";
+    $this->load->model('model_employee');
+  
+  $user_id = $this->session->userdata('user_id');
+  $data['sel_Employee'] = $this->input->post('sel_Employee');
+  if( $this->session->userdata('user_designation_id') == 3 )
+  {
+    $data['sel_Employee'] = $user_id;     
+  }
+
+
+    $data['Leaves'] = $this->model_employee->GetLeaves($data['sel_Employee']);
+    $data['AllEmployees'] = $this->model_employee->GetAllEmployees();
+
+  $data['IsShowAddWeeklyBtn'] = $this->session->userdata('user_designation_id') == 3;
+  $data['IsEditAllow'] = $this->session->userdata('user_designation_id');
+  $data['IsApproveAllow'] = $this->session->userdata('user_designation_id') == 2;
+    $this->load->view('user/viewLeaves',$data);
+  }
+
+  public function MarkLeaveApproved()
+  {
+    $this->load->model('model_employee');
+    $user_Leave_id = $_POST['user_Leave_id'];
+    $WhereArray = array();
+    $WhereArray['user_Leave_id'] = $user_Leave_id;
+    $WeeklyReportData['user_Leave_isapproved'] = 1;
+    $this->model_employee->UpdateLeaveData($WhereArray,$WeeklyReportData);
+  }
+
+   public function IsLeaveAlreadyExist($Isajaxcall='')
+  {
+    $this->load->model('model_employee');
+    $Isajaxcall               = $this->input->post('Isajaxcall');
+    $user_Leave_id= 0;
+    $user_infos = $this->model_employee->IsLeaveAlreadyExist();
+    foreach($user_infos as $user_info)
+    {
+      $user_Leave_id = $user_info['user_Leave_id'];
+    }
+    if($user_Leave_id != 0 && $user_Leave_id != '')
+    {
+      if($Isajaxcall == 1)
+      {
+        echo "Already Exist";
+      }
+      else
+      {
+        return $user_Leave_id;
+      }
+    }
+    else
+    {
+      if($Isajaxcall == 1)
+      {
+        echo "Already Not Exist";
+      }
+      else
+      {
+        return 0;
+      }
+      
+    }
+  }
+
+  public function AddEditLeave()
+  {
+    $this->load->model('model_employee');
+      $data['error']="";
+      $data['success']="";
+
+      $txt_user_Leave_date             = $this->input->post('txt_user_Leave_date');
+      $txt_user_Leave_desciption           = $this->input->post('txt_user_Leave_desciption');
+      
+      if(isset($_POST['hdn_btn_addLeave'])=="")
+      {
+      }
+      else
+      {
+        if($txt_user_Leave_date == "")
+        {
+          $data['error'] = "Please enter date";
+        }
+        elseif(trim($txt_user_Leave_desciption) == "")
+        {
+          $data['error'] = "Please enter Description";
+        }
+        elseif($txt_user_Leave_date != "")
+        {
+
+          $user_Leave_id =  $this->IsLeaveAlreadyExist(); // Validate if the user email already exist.
+
+          if($user_Leave_id == 0)
+          {}
+          else
+          {
+            $data['error'] = "Leave already exist for this date. Try another one";
+          }
+        }
+
+        if($data['error'] == "")
+        {
+          $user_id = $this->session->userdata('user_id');
+          $Formated_user_Leave_date = date('Y-m-d', strtotime($txt_user_Leave_date));
+
+          $LeaveData['user_id'] = $user_id;
+          $LeaveData['user_Leave_date'] = $Formated_user_Leave_date;
+          $LeaveData['user_Leave_desciption'] = trim($txt_user_Leave_desciption);
+          $LeaveData['user_Leave_isapproved'] = 0;
+          $user_user_leave_id = $this->model_employee->SaveleavesData($LeaveData);
+          header('Location:'. base_url().'Employee/Leaves');
+        }
+        else
+        {
+
+        }
+      }
+  
+      $this->load->view('user/AddEditLeave',$data);
+    
+  }
+
   
 }

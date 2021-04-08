@@ -76,20 +76,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                <?php 
-                if($this->session->userdata('user_type') == 1) // 1- Doctor
-                {
-                ?>
-                  <a href="<?php echo base_url().'Doctor/ViewDoctorProfile';?>" class="btn btn-default btn-flat">Profile</a>
-                <?php 
-                }
-                else
-                {
-                ?>
-                  <a href="<?php echo base_url().'patients/viewprofile';?>" class="btn btn-default btn-flat">Profile</a>
-                <?php
-                }
-                ?>
+                  <!-- <a href="<?php echo base_url().'Doctor/ViewDoctorProfile';?>" class="btn btn-default btn-flat">Profile</a> -->
                 </div>
 
                 <div class="pull-right">

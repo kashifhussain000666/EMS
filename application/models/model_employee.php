@@ -153,6 +153,26 @@ class model_employee extends CI_Model
 		return $result;
 	}
 
+	//Function check if leave already exist
+	public function IsLeaveAlreadyExist()
+	{
+		$txt_user_Leave_date              = $this->input->post('txt_user_Leave_date');
+		$Formated_txt_user_Leave_date = date('Y-m-d', strtotime($txt_user_Leave_date));
+		$user_id = $this->session->userdata('user_id');
+		
+		$WhereCondition = "";
+	  	$query  = $this->db->query(" 	
+	  									SELECT user_Leave_id
+	  									FROM `tbl_user_leaves`
+										WHERE user_Leave_date = '$Formated_txt_user_Leave_date'
+										AND user_id = $user_id
+										$WhereCondition
+									");
+		
+		$result = $query->result_array();			
+		return $result;
+	}
+
 	//Function check if employee already exist
 	public function IsEmployeeAlreadyExist($Employee_id)
 	{
@@ -211,7 +231,11 @@ class model_employee extends CI_Model
 		$this->db->where($WhereArray);
 		$this->db->update('tbl_user_weeklyreport',$ReportData);
 	}
-
+	public function UpdateLeaveData($WhereArray,$ReportData)
+	{
+		$this->db->where($WhereArray);
+		$this->db->update('tbl_user_leaves',$ReportData);
+	}
 
 	public function GetWeeklyReports($sel_Employee)
 	{	
@@ -263,8 +287,59 @@ class model_employee extends CI_Model
 		return $result;
 	}
 
+	public function GetLeaves($sel_Employee)
+	{	
+		$WhereCondition = "";
+		$user_id = $this->session->userdata('user_id');
 
+		
+		$sel_status     = $this->input->post('sel_status');
+		$Report_date_from     = $this->input->post('Report_date_from');
+		$Report_date_to     = $this->input->post('Report_date_to');
 
+		if($sel_Employee != '' && $sel_Employee != 0)
+		{
+			$WhereCondition .= "AND tuwr.user_id = '$sel_Employee'";
+		} 
 
+		if($sel_status != ''  && $sel_status != '0' )
+		{
+			if($sel_status == 'Pending')
+			{
+				$WhereCondition .= " AND tuwr.user_Leave_isapproved != 1"; 
+			}
+			else
+			{
+				$WhereCondition .= " AND tuwr.user_Leave_isapproved = 1"; 
+			}
+		} 
+		if(($Report_date_from != "" && $Report_date_to !="" && $Report_date_from <= $Report_date_to) )
+		{	
+			$Formated_Report_date_from = date('Y-m-d', strtotime($Report_date_from));
+			$Formated_Report_date_to = date('Y-m-d', strtotime($Report_date_to));
+			$WhereCondition .= "AND tuwr.user_Leave_date BETWEEN '$Formated_Report_date_from' AND '$Formated_Report_date_to' ";
+		}
+		
+		$query  = $this->db->query(" 	
+									SELECT * ,
+									(
+									    SELECT tu.user_name
+									    FROM tbl_user tu
+									    WHERE tu.user_id = tuwr.user_id
+									) as employee_name
+									FROM tbl_user_leaves tuwr
+									WHERE 1 =1 
+									$WhereCondition
+									ORDER BY tuwr.user_Leave_date DESC
+									");
+		
+		$result = $query->result_array();			
+		return $result;
+	}
 
+	public function SaveleavesData($LeaveData)
+	{
+		$this->db->insert('tbl_user_leaves',$LeaveData);
+		return $this->db->insert_id();
+	}
 }
