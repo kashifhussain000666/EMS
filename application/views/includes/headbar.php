@@ -81,20 +81,18 @@
 
                 <div class="pull-right">
                 <?php
-     if($this->session->userdata('admin_id') != '' && $this->session->userdata('admin_id') != 0){
-      ?>
-      <a href="<?php echo base_url().'admin/signout';?>" class="btn btn-default btn-flat">Sign out</a>
-      <?php
-     }
-     else
-     {
-      ?>
-        <a href="<?php echo base_url().'login/signout';?>" class="btn btn-default btn-flat">Sign out</a>
-      <?php 
-     }
-
+                 if($this->session->userdata('admin_id') != '' && $this->session->userdata('admin_id') != 0){
+                  ?>
+                  <a href="<?php echo base_url().'admin/signout';?>" class="btn btn-default btn-flat">Sign out</a>
+                  <?php
+                 }
+                 else
+                 {
+                  ?>
+                    <a href="<?php echo base_url().'login/signout';?>" class="btn btn-default btn-flat">Sign out</a>
+                  <?php 
+                 }
                 ?>
-                  
                 </div>
               </li>
             </ul>

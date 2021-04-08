@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Add Employeee Page</title>
+  <title>Add Leave</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -52,31 +52,23 @@
     <?php 
     }
     if($success != "")
-        {
-          ?>
-          <div class="alert alert-success">
-            <strong>Success!</strong> <?=$success?>
-          </div>
-          <?php
-        }
-    ?>
-
-
-    <?php
-
+    {
+      ?>
+      <div class="alert alert-success">
+        <strong>Success!</strong> <?=$success?>
+      </div>
+      <?php
+    }
     $txt_user_Leave_date = '' ;
     $txt_user_Leave_desciption = '';
 
     if(isset($_POST['hdn_btn_addLeave'])=="")
-    {     
-    }
+    {}
     else
     {
       $txt_user_Leave_date = $this->input->post('txt_user_Leave_date') ;
       $txt_user_Leave_desciption = $this->input->post('txt_user_Leave_desciption') ;
     }
-    
-
     ?>
 
     <form class="" method="post" id="form_Leave" action="">
@@ -188,11 +180,7 @@
             } 
         });
       }
-
   });
-    
-
-
 </script>
 </body>
 </html>

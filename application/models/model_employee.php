@@ -18,44 +18,49 @@ class model_employee extends CI_Model
 		}
 
 		$query  = $this->db->query(" 	
-										SELECT * FROM `tbl_user` tu
-										WHERE user_designation_id = 3
-										$WhereCondition
-									");
+									SELECT * 
+									FROM `tbl_user` tu
+									WHERE user_designation_id = 3
+									$WhereCondition
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
+
 	//Function get All Employees
 	public function GetAllEmployees()
 	{	
 		$WhereCondition = "";
 		$query  = $this->db->query(" 	
-										SELECT * FROM `tbl_user`
-										WHERE user_designation_id = 3
-										$WhereCondition
-										ORDER BY user_name
-									");
+									SELECT * FROM `tbl_user`
+									WHERE user_designation_id = 3
+									$WhereCondition
+									ORDER BY user_name
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
+
 	//Function get all departments 
 	public function GetAllDepartments()
 	{	
 		$WhereCondition = "";
 		$query  = $this->db->query(" 	
 									SELECT * FROM `tbl_user_department`
-									");
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
+
 	//Function get all designations
 	public function GetAllDesignations()
 	{	
 		$WhereCondition = "";
 		$query  = $this->db->query(" 	
-									SELECT * FROM `tbl_user_designation`
+									SELECT * 
+									FROM `tbl_user_designation`
 									WHERE user_designation_id != 1
-									");
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
@@ -114,18 +119,18 @@ class model_employee extends CI_Model
 									)
 									VALUES 
 									(
-									'$txt_user_name',
-									'$txt_user_email',
-									'$txt_user_phone',
-									'$txt_user_password',
-									'1 '/*Requested*/,
-									'$txt_user_salaryPerHour',
-									'$txt_user_city',
-									'$txt_user_state',
-									'$txt_user_zip',
-									'$txt_user_country',
-									'3',
-									'$user_id'
+										'$txt_user_name',
+										'$txt_user_email',
+										'$txt_user_phone',
+										'$txt_user_password',
+										'1 '/*Requested*/,
+										'$txt_user_salaryPerHour',
+										'$txt_user_city',
+										'$txt_user_state',
+										'$txt_user_zip',
+										'$txt_user_country',
+										'3',
+										'$user_id'
 									)	
 								");
         }
@@ -134,8 +139,8 @@ class model_employee extends CI_Model
 	//Function check if email already exist
 	public function IsEmailAlreadyExist()
 	{
-		$txt_user_email              = $this->input->post('txt_user_email');
-		$Employee_id               = $this->input->post('Employee_id');
+		$txt_user_email		= $this->input->post('txt_user_email');
+		$Employee_id        = $this->input->post('Employee_id');
 		
 		$WhereCondition = "";
 		if($Employee_id != '' && $Employee_id != 0)
@@ -143,12 +148,11 @@ class model_employee extends CI_Model
 			$WhereCondition = " AND tu.user_id != $Employee_id ";
 		}
 	  	$query  = $this->db->query(" 	
-	  									SELECT user_id
-	  									FROM `tbl_user` tu
-										WHERE tu.user_email = '$txt_user_email'
-										$WhereCondition
-									");
-		
+  									SELECT user_id
+  									FROM `tbl_user` tu
+									WHERE tu.user_email = '$txt_user_email'
+									$WhereCondition
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
@@ -162,13 +166,12 @@ class model_employee extends CI_Model
 		
 		$WhereCondition = "";
 	  	$query  = $this->db->query(" 	
-	  									SELECT user_Leave_id
-	  									FROM `tbl_user_leaves`
-										WHERE user_Leave_date = '$Formated_txt_user_Leave_date'
-										AND user_id = $user_id
-										$WhereCondition
-									");
-		
+  									SELECT user_Leave_id
+  									FROM `tbl_user_leaves`
+									WHERE user_Leave_date = '$Formated_txt_user_Leave_date'
+									AND user_id = $user_id
+									$WhereCondition
+								");		
 		$result = $query->result_array();			
 		return $result;
 	}
@@ -177,26 +180,23 @@ class model_employee extends CI_Model
 	public function IsEmployeeAlreadyExist($Employee_id)
 	{
 	  	$query  = $this->db->query(" 	
-	  									SELECT *
-	  									FROM `tbl_user` tu
-										WHERE tu.user_id = '$Employee_id'
-										AND tu.user_designation_id = 3
-									");
-		
+  									SELECT *
+  									FROM `tbl_user` tu
+									WHERE tu.user_id = '$Employee_id'
+									AND tu.user_designation_id = 3
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
 	public function GetSavedReportData($user_id,$DateFrom,$DateTo)
 	{
 	  	$query  = $this->db->query(" 	
-	  									SELECT r.*
-										FROM ems.tbl_user_dailyreport r
-										where r.user_id = $user_id
-										and r.user_DailyReport_date >= '$DateFrom'
-										and r.user_DailyReport_date <= '$DateTo'
-
-									");
-		
+  									SELECT r.*
+									FROM ems.tbl_user_dailyreport r
+									where r.user_id = $user_id
+									and r.user_DailyReport_date >= '$DateFrom'
+									and r.user_DailyReport_date <= '$DateTo'
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
@@ -241,8 +241,6 @@ class model_employee extends CI_Model
 	{	
 		$WhereCondition = "";
 		$user_id = $this->session->userdata('user_id');
-
-		
 		$sel_status     = $this->input->post('sel_status');
 		$Report_date_from     = $this->input->post('Report_date_from');
 		$Report_date_to     = $this->input->post('Report_date_to');
@@ -251,7 +249,6 @@ class model_employee extends CI_Model
 		{
 			$WhereCondition .= "AND tuwr.user_id = '$sel_Employee'";
 		} 
-
 		if($sel_status != ''  && $sel_status != '0' )
 		{
 			if($sel_status == 'Pending')
@@ -281,7 +278,7 @@ class model_employee extends CI_Model
 									WHERE 1 =1 
 									$WhereCondition
 									ORDER BY tuwr.user_WeeklyReport_Startdate DESC
-									");
+							");
 		
 		$result = $query->result_array();			
 		return $result;
@@ -292,7 +289,6 @@ class model_employee extends CI_Model
 		$WhereCondition = "";
 		$user_id = $this->session->userdata('user_id');
 
-		
 		$sel_status     = $this->input->post('sel_status');
 		$Report_date_from     = $this->input->post('Report_date_from');
 		$Report_date_to     = $this->input->post('Report_date_to');
@@ -331,12 +327,10 @@ class model_employee extends CI_Model
 									WHERE 1 =1 
 									$WhereCondition
 									ORDER BY tuwr.user_Leave_date DESC
-									");
-		
+								");
 		$result = $query->result_array();			
 		return $result;
 	}
-
 	public function SaveleavesData($LeaveData)
 	{
 		$this->db->insert('tbl_user_leaves',$LeaveData);

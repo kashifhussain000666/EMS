@@ -22,7 +22,6 @@ class login extends CI_Controller {
     {
       header('Location:'. base_url().'/home');
     }
-
     // if the form is submitted
     if(isset($_REQUEST['btn_loginUser'])=="")
     {
@@ -71,7 +70,6 @@ class login extends CI_Controller {
               'user_name' => $user_name,
               'user_department_id' => $user_department_id,
               'Formated_user_created_date' => $Formated_user_created_date,
-
               );
               $this->session->set_userdata($user_data);
             }
@@ -99,8 +97,10 @@ class login extends CI_Controller {
        header('Location:'. base_url().'');
     }
     $this->session->unset_userdata('user_id');
-    $this->session->unset_userdata('user_type');
-    $this->session->unset_userdata('user_is_active');
+    $this->session->unset_userdata('user_designation_id');
+    $this->session->unset_userdata('user_name');
+    $this->session->unset_userdata('user_department_id');
+    $this->session->unset_userdata('Formated_user_created_date');
     $this->session->unset_userdata('user_name');
     
     $this->session->sess_destroy();

@@ -17,7 +17,6 @@ $this->load->view('includes/header.php'); // load the header HTML
   <?php
   $this->load->view('includes/headbar'); // load the headbar HTML
   ?>
-
   <?php
   $this->load->view('includes/sidebar'); // load the  sidebar HTML
   ?>
@@ -35,7 +34,6 @@ $this->load->view('includes/header.php'); // load the header HTML
         <li class="active"> Leaves</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
 
@@ -50,65 +48,37 @@ $this->load->view('includes/header.php'); // load the header HTML
 
             <form action="" method="post" id="form_search_dotor">
               <div class="row">
-                <!--<div class="col-sm-6">
-                  <div class="dataTables_length" id="example1_length">
-                    <label>
-                      Show <select name="example1_length" aria-controls="example1" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries
-                    </label>
-                  </div>
-                </div>-->
                 <div class="col-sm-12">
-                  <!--<div id="example1_filter" class="dataTables_filter" style="float:left;margin-right: 10px;">
-                    <label>
-                      <input style="height: 33px;" type="search" name="txt_name" id="txt_name" class="form-control input-sm" placeholder="Enter Name" aria-controls="example1">
-                    </label>
-                  </div>-->
-                  <!-- time Picker
-                <div class="bootstrap-timepicker">
-                  <div class="form-group"> -->
-                  <!-- Div Date Range picker --> 
 
                   <div class="<?=$this->session->userdata('user_designation_id') == 3?'hide':''?>" style="width:15%;float: left;margin-right: 10px;">
                     <select class="form-control select2" name="sel_Employee" id="sel_Employee" style="">
                       <option value="0">All Employees</option>
                       <?php 
                       foreach($AllEmployees as $AllEmployee)
-                      {
-
-                      ?>
+                      { ?>
                         <option value="<?=$AllEmployee['user_id'] ?>" <?php if($sel_Employee == $AllEmployee['user_id']){ echo "selected" ;} ?>><?php echo $AllEmployee['user_name']; ?></option>
                       <?php 
-                      }
-                      ?>
+                      } ?>
                     </select>
                   </div>
-
                   <?php
                   $sel_status = $this->input->post('sel_status');
-                  //echo $sel_doctor_category ; die("hello");
                   ?>
-
                 <div class="col-md-2">
                   <!-- select -->
                   <div class="form-group">
-
                     <select class="form-control" name="sel_status" id="sel_status">
                       <option value="0">All Status</option>
                           <option value="Pending" <?php if($sel_status == 'Pending'){ echo "selected" ;}  ?>>Pending</option>
                           <option value="Approved" <?php if($sel_status == 'Approved'){ echo "selected" ;}  ?>>Approved</option>
-
                     </select>
                   </div>
                 </div>
-                     <?php 
-                 
-            $Report_date_from     = $this->input->post('Report_date_from');
-          
-
-          
-          ?>
+                <?php 
+                $Report_date_from     = $this->input->post('Report_date_from');
+                ?>
                 <div class="col-md-3">
-                <span style="float: left;">From: </span>
+                  <span style="float: left;">From: </span>
                   <div class="input-group date" style="margin-left:6%;width:156px;float: left;">
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
@@ -116,13 +86,11 @@ $this->load->view('includes/header.php'); // load the header HTML
                     <input type="text" style="margin-left:10px;" name="Report_date_from" id="Report_date_from" value="<?=$Report_date_from ?>" class="form-control pull-right" >
                   </div>
                 </div>
-                     <?php
-
-            $Report_date_to     = $this->input->post('Report_date_to');
-          
+                <?php
+                $Report_date_to     = $this->input->post('Report_date_to');
                 ?>
                 <div class="col-md-3">
-                <span style="float: left;">To: </span>
+                  <span style="float: left;">To: </span>
                   <div class="input-group date" style="margin-left:6%;width:156px;float: left;">
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
@@ -132,9 +100,9 @@ $this->load->view('includes/header.php'); // load the header HTML
                  </div>
 
                   <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
-				  <?php if( $IsShowAddWeeklyBtn ){?>
-				  <a href="<?php echo base_url().'/Employee/AddEditLeave/';?>" style="height:33px; margin-left:3px" class="btn btn-sm btn-info btn-flat">Add Leaves</a>
-				  <?php } ?>
+        				  <?php if( $IsShowAddWeeklyBtn ){?>
+        				  <a href="<?php echo base_url().'/Employee/AddEditLeave/';?>" style="height:33px; margin-left:3px" class="btn btn-sm btn-info btn-flat">Add Leaves</a>
+        				  <?php } ?>
                   <!-- End div date range picker --> 
                 </div>
               </div>
@@ -154,7 +122,7 @@ $this->load->view('includes/header.php'); // load the header HTML
                 </tr>
                 </thead>
                 <tbody>
-                   <?php
+                <?php
                 foreach($Leaves as $Leave)
                 {
                   $user_Leave_date = $Leave['user_Leave_date'];
@@ -162,17 +130,6 @@ $this->load->view('includes/header.php'); // load the header HTML
 
                   $user_Leave_dateCreated = $Leave['user_Leave_dateCreated'];
                   $Formated_user_Leave_dateCreated = date('D d M, Y ', strtotime($user_Leave_dateCreated));
-
-                  // $appointment_time = $Appointment['appointment_time'];
-                  // $Formated_appointment_Time = date('H:i A', strtotime($appointment_time));
-
-//                   user_id
-// user_Leave_date
-// user_Leave_dateCreated
-// user_Leave_desciption
-// user_Leave_id
-// user_Leave_isapproved
-
                 ?>
                 <tr>
                   <td><?=$Leave['user_Leave_id'] ;?></td>
@@ -183,20 +140,17 @@ $this->load->view('includes/header.php'); // load the header HTML
                   <td>
                     <?php 
                     if($Leave['user_Leave_isapproved'] == 1 )
-                    {
-                    ?> 
+                    {?> 
                     <span class="label label-success">Approved</span>
                     <?php
                     }
                     else
                     { 
-
                     ?>
                     <button <?php if($IsApproveAllow){ ?> onclick="MarkLeaveApproved(<?=$Leave['user_Leave_id']?>)"<?php } ?> class="btn  btn-danger btn-sm">Pending</button>
                     <?php
                     }
-                    ?>
-                      
+                    ?> 
                     </td>
                 <?php
               }
@@ -253,16 +207,6 @@ $this->load->view('includes/footer'); // load the footer HTML
     $('#Report_date_to').datepicker({
       autoclose: true
     })
-
-    //  //Timepicker
-    // $('#appointment_Time_start').timepicker({
-    //   showInputs: false
-    // })
-
-    //  //Timepicker
-    // $('#appointment_Time_to').timepicker({
-    //   showInputs: false
-    // })
   })
 
   function MarkLeaveApproved(user_Leave_id)

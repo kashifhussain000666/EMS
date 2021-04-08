@@ -17,15 +17,9 @@ class common extends CI_Controller {
    }
 
   public function index()
-  {
-
-  	
+  {  	
   }
 
-  public function IsUserNameAlreadyExist()
-  {
-    die('asdfasd');
-  }
   
   public function ChangePassowrd()
   {
@@ -35,11 +29,7 @@ class common extends CI_Controller {
        $confirm_Password = $this->input->post('confirm_Password');
        $hdn_user_id = $this->input->post('hdn_user_id');
        $user_id = "";
-      /* echo '<br/>'.$old_Password;
-       echo '<br/>'.$new_Password;
-       echo '<br/>'.$confirm_Password;
-       echo '<br/>'.$hdn_user_id;
-  */
+
        $ecryptedOldPassword = md5($old_Password); // Apply encryption;
     
        $user_infos = $this->model_user->isValidOldPassword($hdn_user_id ,$ecryptedOldPassword); 

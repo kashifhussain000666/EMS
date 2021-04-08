@@ -46,7 +46,7 @@ $this->load->view('includes/header.php'); // load the header HTML
 
             <div class="info-box-content">
               <span class="info-box-text">Total Reports</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number">100</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -56,49 +56,10 @@ $this->load->view('includes/header.php'); // load the header HTML
       </div>
       <!-- /.row -->
 
-     <div class="row">
-         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3></h3>
 
-              <p>Total Approved Reports</p>
-            </div>
-            <div class="icon">
-              <i class="ion  ion-bag "></i>
-            </div>
-            <a  href="javascript:void(0)" onclick="funcviewAppointmentDetail(appintmentstate='14', IsToday='1')" class="small-box-footer">View detail <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-       
-      </div>
-      <!-- /.row -->
-
-       <div class="row">
-    
-         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3></h3>
-
-              <p>View All Reports</p>
-            </div>
-            <div class="icon">
-              <i class="ion  ion-bag "></i>
-            </div>
-            <a  href="<?php echo base_url().'doctor/griddoctor';?>" class="small-box-footer">Click here to view all Reports <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-       
-       
-      </div>
     </section>
     <!-- /.content -->
    </div>
-
-
 </div>
 <!-- ./wrapper -->
 <?php
@@ -109,24 +70,4 @@ $this->load->view('includes/footer'); // load the footer HTML
 <script src="<?php echo base_url().'assets/js/dist/js/pages/dashboard2.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'?>"></script>
 <script src="<?php echo base_url().'assets/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'?>"></script>
-<script type="text/javascript">
-      function funcviewAppointmentDetail(Appointmentstatus,IsToday)
-      {
-        if(IsToday == 0)
-        {
-          $("#hdn_appointment_date_from").val("");
-          $("#hdn_appointment_date_to").val("");
-        }
-        
-        $("#hdn_sel_status").val(Appointmentstatus);
-        //var form = "#hdn_get_view_detail";
-        $("#hdn_get_view_detail").submit();
-      }
-</script>
 
-<form method="post" action="<?php echo base_url().'Patients/ViewAppointment'?>" target="_blank" id="hdn_get_view_detail">
-    <input type="hidden" name="appointment_date_from" id="hdn_appointment_date_from" value="<?php echo date('m/d/Y'); ?>">
-    <input type="hidden" name="appointment_date_to" id="hdn_appointment_date_to" value="<?php echo date('m/d/Y'); ?>">
-    <input type="hidden" name="sel_status" id="hdn_sel_status" value="">
-    <input type="hidden" name="btn_search" id="btn_search" value="">
-</form>

@@ -31,7 +31,7 @@
         {
         ?>
           <li><a href="<?php echo base_url().'Employee/WeeklyReports'; ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Reports</span></a></li>
-          <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Leaves</span></a></li>
+          <li><a href="<?php echo base_url().'Employee/Leaves'; ?>"><i class="fa fa-circle-o text-aqua"></i> <span>Leaves</span></a></li>
           
           <!-- <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Personals</span></a></li>
           <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Departments</span></a></li> -->

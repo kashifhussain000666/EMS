@@ -37,7 +37,6 @@ $this->load->view('includes/header.php'); // load the header HTML
 
     <!-- Main content -->
     <section class="content">
-
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -49,24 +48,7 @@ $this->load->view('includes/header.php'); // load the header HTML
 
             <form action="" method="post" id="form_search_dotor">
               <div class="row">
-                <!--<div class="col-sm-6">
-                  <div class="dataTables_length" id="example1_length">
-                    <label>
-                      Show <select name="example1_length" aria-controls="example1" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries
-                    </label>
-                  </div>
-                </div>-->
                 <div class="col-sm-12">
-                  <!--<div id="example1_filter" class="dataTables_filter" style="float:left;margin-right: 10px;">
-                    <label>
-                      <input style="height: 33px;" type="search" name="txt_name" id="txt_name" class="form-control input-sm" placeholder="Enter Name" aria-controls="example1">
-                    </label>
-                  </div>-->
-                  <!-- time Picker
-                <div class="bootstrap-timepicker">
-                  <div class="form-group"> -->
-                  <!-- Div Date Range picker --> 
-
                   <?php
                     $sel_Employee = $this->input->post('sel_Employee');
                   ?>
@@ -75,13 +57,10 @@ $this->load->view('includes/header.php'); // load the header HTML
                       <option value="0">All Employees</option>
                       <?php 
                       foreach($AllEmployees as $AllEmployee)
-                      {
-
-                      ?>
+                      {  ?>
                         <option value="<?=$AllEmployee['user_id'] ?>" <?php if($sel_Employee == $AllEmployee['user_id']){ echo "selected" ;} ?>><?php echo $AllEmployee['user_name']; ?></option>
                       <?php 
-                      }
-                      ?>
+                      } ?>
                     </select>
                   </div>
                   <button type="submit" style="height:33px;" name="btn_search" class="btn btn-sm btn-info btn-flat pull-left">Search</button>
@@ -89,36 +68,32 @@ $this->load->view('includes/header.php'); // load the header HTML
               </div>
               <br><br>
               </div>
-              
             </form>
 
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Date Created</th>
-                  <th>Salary Per Hour</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>Zip</th>
-                  <th>Country</th>
-                  <th>Action</th>
-                </tr>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Date Created</th>
+                    <th>Salary Per Hour</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                  </tr>
                 </thead>
                 <tbody>
                    <?php
-                foreach($Employees as $Employee)
-                {
-                  $user_datecreated = $Employee['user_datecreated'];
-                  $Formated_user_datecreated = date('D d M, Y ', strtotime($user_datecreated));
-
-                  // $appointment_time = $Appointment['appointment_time'];
-                  // $Formated_appointment_Time = date('H:i A', strtotime($appointment_time));
-                ?>
-                <tr>
-                  <td><?=$Employee['user_id'] ;?></td>
+                  foreach($Employees as $Employee)
+                  {
+                    $user_datecreated = $Employee['user_datecreated'];
+                    $Formated_user_datecreated = date('D d M, Y ', strtotime($user_datecreated));
+                  ?>
+                  <tr>
+                    <td><?=$Employee['user_id'] ;?></td>
                     <td><?=$Employee['user_name'] ?></td>
                     <td><?=$Employee['user_email'] ?></td>
                     <td><?=$Formated_user_datecreated ?></td>
@@ -130,11 +105,10 @@ $this->load->view('includes/header.php'); // load the header HTML
                     <td>
                       <a href="<?php echo base_url().'Employee/AddEditEmployee/'.$Employee['user_id']; ?> " target="_blank"  class="btn  btn-warning btn-sm">Update</a>
                     </td>
-                  
-                </tr>
-                <?php
-                  }
-                ?>
+                  </tr>
+                  <?php
+                    }
+                  ?>
                 </tbody>
               </table>
             </div>
@@ -174,62 +148,5 @@ $this->load->view('includes/footer'); // load the footer HTML
       'ordering'    : true,
       'info'        : true,
       'autoWidth'   : false
-    })
-
-   
-
-  //   //Date picker
-  //   $('#appointment_date_from').datepicker({
-  //     autoclose: true
-  //   })
-
-  //    //Date picker
-  //   $('#appointment_date_to').datepicker({
-  //     autoclose: true
-  //   })
-
-  //    //Timepicker
-  //   $('#appointment_Time_start').timepicker({
-  //     showInputs: false
-  //   })
-
-  //    //Timepicker
-  //   $('#appointment_Time_to').timepicker({
-  //     showInputs: false
-  //   })
-  // })
-
-  // function funChangeAppointmentStatus(appointment_id , appointment_status_id , CancelAppointment)
-  // {
-  //   var confirmmsg = "";
-  //   if(CancelAppointment == 1)
-  //   {
-  //     confirmmsg = "Are you sure you want to cancel this Appointment?";
-  //   }
-  //   else
-  //   {
-  //     confirmmsg = "Are you sure you want to approve this Appointment?";
-  //   }
-  //     if(confirm(confirmmsg))
-  //     {
-  //         $.ajax(
-  //        {
-  //         url:BaseUrlSite+'appointment/UpdateAppointmentStatus',
-  //         data:{
-  //             isAjaxCall    :'true',
-  //             appointment_id: appointment_id,
-  //             appointment_status_id : appointment_status_id,
-  //             CancelAppointment : CancelAppointment
-  //           },
-  //           type:'POST',
-  //           success:function(data)
-  //           {
-              
-  //             location.reload();
-  //           } 
-  //       });
-  //     }
-  // }
-
-   
+    })   
 </script>

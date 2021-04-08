@@ -17,12 +17,7 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo base_url().'assets/css/iCheck/square/blue.css'?>">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+
    <style type="text/css">
         .spanError{
           color: #ff0000;
@@ -45,29 +40,27 @@
     <p class="login-box-msg">Sign in to start a new journey with us</p>
     <?php 
     if($error != "")
-    {
-      ?>
+    { ?>
     <div class="alert alert-danger">
     <strong>Error!</strong> <?=$error?>
     </div>
     <?php 
     }
     if($success != "")
-        {
-          ?>
-          <div class="alert alert-success">
-            <strong>Success!</strong> <?=$success?>
-          </div>
-          <?php
-        }
-      if($this->session->flashdata('success_signup') != "")
-        {
-          ?>
-          <div class="alert alert-success">
-            <strong>Success!</strong> <?php echo $this->session->flashdata('success_signup'); ?>
-          </div>
-          <?php
-        }
+    {?>
+      <div class="alert alert-success">
+        <strong>Success!</strong> <?=$success?>
+      </div>
+      <?php
+    }
+    if($this->session->flashdata('success_signup') != "")
+    {
+      ?>
+      <div class="alert alert-success">
+        <strong>Success!</strong> <?php echo $this->session->flashdata('success_signup'); ?>
+      </div>
+      <?php
+    }
     ?>
     <form action="" method="post" id="form_login">
       <div class="form-group has-feedback">
@@ -90,27 +83,14 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <!-- <button  class="btn btn-primary btn-block btn-flat">Sign In</button>-->
-          <!---<a href="javascript:void(0);" onclick="ValidateLogin()" class="btn btn-primary btn-block btn-flat" id="btn_loginUser" name="btn_loginUser">Sign In
-                      </a>-->
           <button class="btn btn-primary btn-block btn-flat" id="btn_loginUser" name="btn_loginUser">Sign In
-                      </button>
+          </button>
         </div>
         <!-- /.col -->
       </div>
     </form>
 
     <div class="social-auth-links text-center">
-     <!-- <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
-    <!-- /.social-auth-links -->
-
-    <!--<a href="#">I forgot my password</a><br> -->
-    <!-- <a href="<?php echo base_url().'signup' ?>" class="text-center">Register a new membership</a> -->
 
   </div>
   <!-- /.login-box-body -->
@@ -134,24 +114,19 @@
 
     if(txt_email == '')
     {
-      
       $("#Error_usename").html("Please enter email");
       $("#txt_email").addClass( "Errorborderclass" );
       return false;
     }
     
-    if(txt_email == '')
+    if(txt_password == '')
     {
-      
       $("#Error_password").html("Please enter password");
       $("#txt_password").addClass( "Errorborderclass" );
       return false;
     }
-   
     else
-    {
-      
-    }
+    {}
     $("#form_login").submit();
   });
 </script>

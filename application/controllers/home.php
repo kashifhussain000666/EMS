@@ -14,35 +14,14 @@ class home extends CI_Controller {
   {
   	$this->load->helper('url'); // load helper fuction
 
-      $this->load->model('model_common');
-
+    $this->load->model('model_common');
     if($this->session->userdata('user_id') != '' || $this->session->userdata('user_id') != 0){
-      //echo "hello";
     }
     else
     {
     }
-
-
-    // if($this->session->userdata('user_type') == 1) // 1 - Doctor
-    // {
-    //   $data[] = "";
-
-    //   $data["commonCounts"] = $this->model_common->getcommonInfoCounts();
-    //   $data["commonDoctorCounts"] = $this->model_common->getcommonDoctorCounts();
-
-      
-    //   $this->load->view('Doctor/home',$data);
-    // }else
-      $data[] = "";
-
-      // $data["commonCounts"] = $this->model_common->getcommonInfoCounts();
-      // $data["commonPatientCounts"] = $this->model_common->getcommonpatientCounts();
-      
-
-      $this->load->view('user/home',$data);
-  	
-    //redirect(base_url().'home/login');
+    $data[] = "";
+    $this->load->view('user/home',$data);
   }
   public function login()
   { 

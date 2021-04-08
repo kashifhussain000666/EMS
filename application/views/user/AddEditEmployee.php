@@ -17,13 +17,6 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo base_url().'assets/plugins/iCheck/square/blue.css';?>">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
    <style type="text/css">
         .spanError{
           color: #ff0000;
@@ -76,9 +69,7 @@
         }
     ?>
 
-
     <?php
-
     $txt_user_name = '' ;
     $txt_user_email             = '';
     $txt_user_phone             = '';
@@ -109,15 +100,25 @@
         }
       }
     }
-    
-
+    else
+    {
+      $txt_user_name            = $this->input->post('txt_user_name');
+      $txt_user_email           = $this->input->post('txt_user_email');
+      $txt_user_phone           = $this->input->post('txt_user_phone');
+      $txt_user_password        = $this->input->post('txt_user_password');
+      $txt_retype_user_password = $this->input->post('txt_retype_user_password');
+      $txt_user_salaryPerHour   = $this->input->post('txt_user_salaryPerHour');
+      $txt_user_city            = $this->input->post('txt_user_city');
+      $txt_user_state           = $this->input->post('txt_user_state');
+      $txt_user_zip             = $this->input->post('txt_user_zip');
+      $txt_user_country         = $this->input->post('txt_user_country');
+    }
     ?>
 
     <form class="" method="post" id="form_signup" action="">
       <?php 
       if(isset($Employee_id) && $Employee_id != '')
-      {
-      ?>
+      { ?>
         <input type="hidden" name="Employee_id" value="<?=$Employee_id ?>">
       <?php
       }
@@ -172,37 +173,20 @@
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <span id="Error_user_country" class="spanError"></span>
       </div>
-     <!--  <div class="form-group has-feedback">
-          <select name="user_department_id" id="user_department_id" onchange="funcHideShowData()" class="form-control" required="">
-              <option value="0" selected="">-- Account Type --</option>
-               <?php 
-                foreach($AllDesignations as $AllDesignation)
-                {
-                ?>
-                  <option value="<?=$AllDepartment['user_designation_id'] ?>" <?php if($this->input->post('user_department_id') == $AllDepartment['user_designation_name']){ echo "selected" ;}  ?>><?php echo $AllDepartment['user_designation_name']; ?></option>
-                <?php 
-                }
-                ?>
-          </select>
-          <span class="glyphicon glyphicons-parents form-control-feedback"></span>
-          <span id="Error_user_type" class="spanError"></span>
-      </div> -->
-      
-      <!--</div>-->
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
           <input type="hidden" name="hdn_btn_createUser" value="hdn_btn_createUser"/>
           <input type="button"  class="btn btn-primary btn-block btn-flat" id="btn_createUser" name="btn_createUser" value="
           <?php if(isset($Employee_id) && $Employee_id != '')
-      {
-        echo "Update";
-      }
-      else
-      {
-        echo "Add";
-      }
-      ?>
+          {
+            echo "Update";
+          }
+          else
+          {
+            echo "Add";
+          }
+          ?>
           ">
         </div>
         <!-- /.col -->
@@ -232,30 +216,12 @@
       increaseArea: '20%' /* optional */
     });
 
-    $('[data-mask]').inputmask()
-
-    $("#phoneNo").mask('0000-0000000');
-    $("#txt_cnic").mask('00000-0000000-0');
   });
 </script>
 
 <script type="text/javascript">
-
-  function funcHideShowData()
-  {
-     //alert("hello");
-    var user_type = $( "#user_type" ).val();
-    if(user_type == 1 )
-    {
-        $("#div_sel_doctor_category").show();
-    }
-    else
-    {
-      $("#div_sel_doctor_category").hide();
-    }
-  }
   
-  //function ValidateSignup()
+
   $("#btn_createUser").click(function()
   {
     var txt_user_name      = $("#txt_user_name").val();
@@ -323,16 +289,14 @@
               Employee_id : 
               <?php 
               if(isset($Employee_id) && $Employee_id != '')
-              {
-              ?>
+              { ?>
               <?=$Employee_id ?>
               <?php
               }
               else
               {
                 echo 0;
-              }
-              ?>
+              } ?>
             },
             type:'POST',
             success:function(data)
@@ -430,8 +394,6 @@
       
     }
   }
-
-
 </script>
 </body>
 </html>
